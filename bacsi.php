@@ -29,12 +29,10 @@ if (isset($_POST['search']) && !empty($_POST['search_keyword'])) {
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <link rel="shortcut icon" href="../../imgs/hospital-solid.svg" type="image/x-icon">
    <!-- font awesome cdn link  -->
-=======
    <title>Danh sách Bác sĩ</title>
->>>>>>> ae9bf74a94eebb4d1ceab69bcf6e108b24c256c1
+
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="css/style.css">
 </head>

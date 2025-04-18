@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p><a href="home.php">Trang chủ</a> <span> / Bệnh nhân</span></p>
     </div>
 
+    <!-- menu section starts  -->
 
     <section class="products" >
         <div class="box-container">

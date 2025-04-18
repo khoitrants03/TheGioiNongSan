@@ -45,7 +45,7 @@ if (isset($_POST['search']) && !empty($_POST['search_keyword'])) {
       <h3>Bác sĩ hiện có</h3>
       <p><a href="home.php">Trang chủ</a> <span> / Bác sĩ</span></p>
    </div>
-
+khoi
    <section class="search-bar">
       <form action="" method="post" class="search-form">
          <input type="text" name="search_keyword" placeholder="Tìm bác sĩ..." value="<?= htmlspecialchars($search_keyword); ?>" class="box">

@@ -37,25 +37,25 @@ include 'components/add_cart.php';
 <body>
 
    <?php
-   // if (isset($_SESSION['phanquyen'])) {
-   //    if ($_SESSION['phanquyen'] === 'nhanvien') {
-   //       require("components/user_header_doctor.php");
-   //    } elseif ($_SESSION['phanquyen'] === 'bacsi') {
-   //       require("components/user_header_doctor.php");
-   //    } elseif ($_SESSION['phanquyen'] === 'benhnhan') {
-   //       require("components/user_header_patient.php");
-   //    }
-   //    elseif ($_SESSION['phanquyen'] === 'tieptan') {
-   //       require("components/user_header_tieptan.php");
-   //    }
-   //    elseif ($_SESSION['phanquyen'] === 'nhathuoc') {
-   //       require("components/user_header_nhathuoc.php");
-   //    } elseif ($_SESSION['phanquyen'] === 'thungan') {
-   //       require("components/user_header_thungan.php");
-   //    }
-   // } else {
+   if (isset($_SESSION['phanquyen'])) {
+      if ($_SESSION['phanquyen'] === 'nhanvien') {
+         require("components/user_header_doctor.php");
+      } elseif ($_SESSION['phanquyen'] === 'bacsi') {
+         require("components/user_header_doctor.php");
+      } elseif ($_SESSION['phanquyen'] === 'benhnhan') {
+         require("components/user_header_patient.php");
+      }
+      elseif ($_SESSION['phanquyen'] === 'tieptan') {
+         require("components/user_header_tieptan.php");
+      }
+      elseif ($_SESSION['phanquyen'] === 'nhathuoc') {
+         require("components/user_header_nhathuoc.php");
+      } elseif ($_SESSION['phanquyen'] === 'thungan') {
+         require("components/user_header_thungan.php");
+      }
+   } else {
    include("components/user_header.php");
-   // }
+   }
    ?>
 
    <section class="hero">

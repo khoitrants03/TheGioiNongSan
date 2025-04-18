@@ -59,7 +59,7 @@ if (isset($_SESSION['user_id'])) {
       <div class="swiper reviews-slider">
          <div class="swiper-wrapper">
             <div class="swiper-slide slide">
-               <img src="./uploaded_img/nong-san-xuat-khau-3.jpg" alt="">
+               <img src="uploaded_img/nong-san-xuat-khau-3.jpg" alt="">
                <div class="profile">
                   <h1>“Thế giới nông sản” là Hệ thống bán lẻ sản phẩm nông sản sạch được nhiều
                       chị em nội trợ tin tưởng, chúng tôi cam kết :</h1>

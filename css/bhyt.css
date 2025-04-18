@@ -1,0 +1,112 @@
+/* Container layout */
+.container {
+    display: flex;
+    align-items: flex-start;
+ }
+ 
+ /* Sidebar style */
+ .sidebar {
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin-right: 20px;
+    border-radius: 8px;
+ }
+ 
+ .sidebar button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+ }
+ 
+ .sidebar button:hover {
+    background-color: #d0d0d0;
+ }
+ 
+ /* Main form section */
+ .checkout {
+    flex: 1;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+ }
+ 
+ .checkout .title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+ }
+ 
+ .insurance-form .form-group {
+    margin-bottom: 15px;
+ }
+ 
+ .insurance-form label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+ }
+ 
+ .insurance-form input[type="text"],
+ .insurance-form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+ }
+ 
+ .insurance-form .confirm-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+ }
+ .confirm-btn {
+    width: 100px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+ }
+ 
+ .confirm-btn:hover {
+    background-color: #004494;
+ }
+ 
+ .delete-btn {
+    background-color: #d9534f; /* Màu đỏ cho nút Xóa */
+ }
+ 
+ .delete-btn:hover {
+    background-color: #c9302c;
+ }
+ 
+ 
+ .insurance-form .confirm-btn:hover {
+    background-color: #004494;
+ }
+ 

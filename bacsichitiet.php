@@ -22,7 +22,7 @@ try {
     $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$doctor) {
-        die("Không tìm thấy bác sĩ với mã: " . $doctor_id);
+        die("Không tìmm thấy bác sĩ với mã: " . $doctor_id);
     }
 } catch(PDOException $e) {
     die("Lỗi truy vấn: " . $e->getMessage());

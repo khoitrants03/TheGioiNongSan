@@ -59,7 +59,7 @@ if (isset($_SESSION['user_id'])) {
       <div class="swiper reviews-slider">
          <div class="swiper-wrapper">
             <div class="swiper-slide slide">
-               <img src="uploaded_img/nong-san-xuat-khau-3.jpg" alt="">
+               <img src="imgs/nong-san-xuat-khau-3.jpg" alt="">
                <div class="profile">
                   <h1>“Thế giới nông sản” là Hệ thống bán lẻ sản phẩm nông sản sạch được nhiều
                       chị em nội trợ tin tưởng, chúng tôi cam kết :</h1>
@@ -88,34 +88,7 @@ if (isset($_SESSION['user_id'])) {
 
       <div class="box-container">
 
-         <?php
-         $select_products = $conn->prepare("SELECT * FROM `tintuc` LIMIT 6");
-         $select_products->execute();
-         if ($select_products->rowCount() > 0) {
-            while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-               ?>
-               <form action="" method="post" class="box">
-
-                  <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                  <input type="hidden" name="name" value="<?= $fetch_products['name']; ?>">
-                  <input type="hidden" name="new" value="<?= $fetch_products['name1']; ?>">
-                  <input type="hidden" name="image" value="<?= $fetch_products['imge']; ?>">
-                  <a class="fas fa-eye"></a>
-
-                  <img src="uploaded_img/<?= $fetch_products['imge']; ?>" alt="">
-                  <div class="name">
-                     <?= $fetch_products['name']; ?>
-                  </div>
-                  <div class="new">
-                     <?= $fetch_products['name1']; ?>
-                  </div>
-               </form>
-               <?php
-            }
-         } else {
-            echo '<p class="empty">Không có thoong tin để hiển thị!</p>';
-         }
-         ?>
+         
 
       </div>
 

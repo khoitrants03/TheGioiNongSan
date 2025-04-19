@@ -1,34 +1,73 @@
-navbar = document.querySelector('.header .flex .navbar');
+// Cart quantity update
+document.querySelectorAll('.qty').forEach(input => {
+    input.addEventListener('change', function() {
+        if (this.value < 1) {
+            this.value = 1;
+        }
+        if (this.value > 99) {
+            this.value = 99;
+        }
+    });
+});
 
-document.querySelector('#menu-btn').onclick = () => {
-   navbar.classList.toggle('active');
-   profile.classList.remove('active');
+// Update cart count in header
+function updateCartCount() {
+    fetch('components/get_cart_count.php')
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.fa-shopping-cart + span').textContent = `(${data.count})`;
+        });
 }
 
-profile = document.querySelector('.header .flex .profile');
-
-document.querySelector('#user-btn').onclick = () => {
-   profile.classList.toggle('active');
-   navbar.classList.remove('active');
+// Update cart item quantity
+function updateCartItem(cartId, quantity) {
+    fetch('components/update_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `cart_id=${cartId}&qty=${quantity}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateCartCount();
+                location.reload();
+            }
+        });
 }
 
-window.onscroll = () => {
-   navbar.classList.remove('active');
-   profile.classList.remove('active');
+// Remove cart item
+function removeCartItem(cartId) {
+    if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+        fetch('components/remove_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `cart_id=${cartId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateCartCount();
+                    location.reload();
+                }
+            });
+    }
 }
 
-function loader() {
-   document.querySelector('.loader').style.display = 'none';
+// Calculate total
+function calculateTotal() {
+    let total = 0;
+    document.querySelectorAll('.sub-total span').forEach(element => {
+        total += parseInt(element.textContent.replace(/[^0-9]/g, ''));
+    });
+    document.querySelector('.grand-total .price').textContent = total.toLocaleString() + ' VNĐ';
 }
 
-function fadeOut() {
-   setInterval(loader, 2000);
-}
-
-window.onload = fadeOut;
-
-document.querySelectorAll('input[type="number"]').forEach(numberInput => {
-   numberInput.oninput = () => {
-      if (numberInput.value.length > numberInput.maxLength) numberInput.value = numberInput.value.slice(0, numberInput.maxLength);
-   };
+// Initialize cart functionality
+document.addEventListener('DOMContentLoaded', function() {
+    calculateTotal();
+    updateCartCount();
 });

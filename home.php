@@ -122,13 +122,11 @@ include 'components/add_cart.php';
             while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                ?>
                <form action="" method="post" class="box">
-
                   <input type="hidden" name="pid" value="<?= $fetch_products['ten_sanpham']; ?>">
                   <input type="hidden" name="name" value="<?= $fetch_products['so_luong_ton']; ?>">
                   <input type="hidden" name="new" value="<?= $fetch_products['gia']; ?>">
                   <input type="hidden" name="image" value="<?= $fetch_products['img']; ?>">
-                  <a class="fas fa-eye"></a>
-
+                  <a href="product_detail.php?pid=<?= $fetch_products['ten_sanpham']; ?>" class="fas fa-eye"></a>
                   <img src="uploaded_img/<?= $fetch_products['img']; ?>" alt="">
                   <div class="new">
                     Tên sản phẩm: <?= $fetch_products['ten_sanpham']; ?>

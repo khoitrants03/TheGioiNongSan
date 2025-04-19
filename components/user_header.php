@@ -1,4 +1,5 @@
 <?php
+include 'connect.php';
 
 if (isset($_GET['logout'])) {
     session_unset(); // Xóa tất cả biến trong session
@@ -8,7 +9,11 @@ if (isset($_GET['logout'])) {
 }
 
 // Kiểm tra xem người dùng đã đăng nhập hay chưa
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    $user_id = '';
+}
 
 $user_name = null;
 if ($user_id) {
@@ -18,6 +23,14 @@ if ($user_id) {
         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
         $user_name = $fetch_profile['name'];
     }
+}
+
+// Get cart count
+$cart_count = 0;
+if ($user_id != '') {
+    $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+    $select_cart->execute([$user_id]);
+    $cart_count = $select_cart->rowCount();
 }
 ?>
 
@@ -77,11 +90,7 @@ if ($user_id) {
             </nav>
 
             <div class="icons">
-                <?php
-                $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
-                $count_cart_items->execute([$user_id]);
-                $total_cart_items = $count_cart_items->rowCount();
-                ?>
+                <a href="cart.php" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">(<?= $cart_count; ?>)</span></a>
                 <a href="search.php"><i class="fas fa-search"></i></a>
                 <div id="user-btn" class="fas fa-user"></div>
                 <div id="menu-btn" class="fas fa-bars"></div>
@@ -103,7 +112,7 @@ if ($user_id) {
         </section>
     </header>
 
-
+    <script src="js/script.js"></script>
 </body>
 
 </html>

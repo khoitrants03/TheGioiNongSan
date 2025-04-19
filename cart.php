@@ -9,14 +9,14 @@ if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
 } else {
    $user_id = '';
-   header('location:home.php');
-};
+   header('location:login.php');
+}
 
 if (isset($_POST['delete'])) {
    $cart_id = $_POST['cart_id'];
    $delete_cart_item = $conn->prepare("DELETE FROM `cart` WHERE id = ?");
    $delete_cart_item->execute([$cart_id]);
-   $message[] = 'Đơn đặt lịch đã được xóa!';
+   $message[] = 'Đã xóa sản phẩm khỏi giỏ hàng!';
 }
 
 if (isset($_POST['delete_all'])) {
@@ -32,12 +32,10 @@ if (isset($_POST['update_qty'])) {
    $qty = filter_var($qty, FILTER_SANITIZE_STRING);
    $update_qty = $conn->prepare("UPDATE `cart` SET quantity = ? WHERE id = ?");
    $update_qty->execute([$qty, $cart_id]);
-   $message[] = 'Số lượng đã được cập nhật';
+   $message[] = 'Đã cập nhật số lượng!';
 }
 
 $grand_total = 0;
-
- 
 
 ?>
 
@@ -49,7 +47,7 @@ $grand_total = 0;
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Giỏ hàng</title>
-   <link rel="shortcut icon" href="./imgs/icon.png" type="image/x-icon">
+   <link rel="shortcut icon" href="./imgs/hospital-solid.svg" type="image/x-icon">
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
@@ -71,9 +69,9 @@ $grand_total = 0;
 
    <!-- shopping cart section starts  -->
 
-   <section class="products">
+   <section class="products shopping-cart">
 
-      <h1 class="title">Đơn đặt lịch của bạn</h1>
+      <h1 class="title">Giỏ hàng của bạn</h1>
 
       <div class="box-container">
 
@@ -83,41 +81,34 @@ $grand_total = 0;
          $select_cart->execute([$user_id]);
          if ($select_cart->rowCount() > 0) {
             while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
+               $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']);
+               $grand_total += $sub_total;
          ?>
                <form action="" method="post" class="box">
                   <input type="hidden" name="cart_id" value="<?= $fetch_cart['id']; ?>">
-                  <a href="quick_view.php?pid=<?= $fetch_cart['pid']; ?>" class="fas fa-eye"></a>
-                  <button type="submit" class="fas fa-times" name="delete" onclick="return confirm('Xóa sản phẩm này?');"></button>
+                  <a href="product_detail.php?pid=<?= $fetch_cart['pid']; ?>" class="fas fa-eye"></a>
                   <img src="uploaded_img/<?= $fetch_cart['image']; ?>" alt="">
                   <div class="name"><?= $fetch_cart['name']; ?></div>
                   <div class="flex">
-                     <div class="price"><?php echo currency_format($fetch_cart['price']); ?></div>
-
-                     <input type="number" name="qty" class="qty" min="1" max="99" value="<?= $fetch_cart['quantity']; ?>" maxlength="2">
+                     <div class="price"><?= $fetch_cart['price']; ?> VNĐ</div>
+                     <input type="number" name="qty" class="qty" min="1" max="99" value="<?= $fetch_cart['quantity']; ?>" onkeypress="if(this.value.length == 2) return false;">
                      <button type="submit" class="fas fa-edit" name="update_qty"></button>
                   </div>
-                  <div class="sub-total"> Tổng chi phí :
-                     <span>
-                        <?php
-                        $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']);
-                        echo currency_format($sub_total) ?>
-                     </span>
-                  </div>
+                  <div class="sub-total">Tổng: <span><?= $sub_total; ?> VNĐ</span></div>
+                  <input type="submit" value="Xóa" class="delete-btn" name="delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
                </form>
          <?php
-               $grand_total += $sub_total;
             }
          } else {
-            echo '<p class="empty">Giỏ hàng bạn không có gì!</p>';
+            echo '<p class="empty">Giỏ hàng trống!</p>';
          }
          ?>
 
       </div>
 
       <div class="cart-total">
-         <p>Tổng tiền : <span></span></p>
-      
-         <a href="checkout.php" class="btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">Tiến hành thanh toán</a>
+         <p>Tổng cộng: <span><?= $grand_total; ?> VNĐ</span></p>
+         <a href="checkout.php" class="btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">Thanh toán</a>
       </div>
 
       <div class="more-btn">

@@ -37,25 +37,9 @@ include 'components/add_cart.php';
 <body>
 
    <?php
-   if (isset($_SESSION['phanquyen'])) {
-      if ($_SESSION['phanquyen'] === 'nhanvien') {
-         require("components/user_header_doctor.php");
-      } elseif ($_SESSION['phanquyen'] === 'bacsi') {
-         require("components/user_header_doctor.php");
-      } elseif ($_SESSION['phanquyen'] === 'benhnhan') {
-         require("components/user_header_patient.php");
-      }
-      elseif ($_SESSION['phanquyen'] === 'tieptan') {
-         require("components/user_header_tieptan.php");
-      }
-      elseif ($_SESSION['phanquyen'] === 'nhathuoc') {
-         require("components/user_header_nhathuoc.php");
-      } elseif ($_SESSION['phanquyen'] === 'thungan') {
-         require("components/user_header_thungan.php");
-      }
-   } else {
+    
    include("components/user_header.php");
-   }
+   
    ?>
 
    <section class="hero">
@@ -71,7 +55,7 @@ include 'components/add_cart.php';
                   <a href="#" class="btn">Xem thêm</a>
                </div>
                <div class="image">
-                  <img src="imgs/Raffles_Hospital.png" alt="">
+                  <img src="imgs/nong-san-xuat-khau-3.jpg" alt="">
                </div>
             </div>
 
@@ -82,7 +66,7 @@ include 'components/add_cart.php';
                   <a href="#" class="btn">Xem thêm</a>
                </div>
                <div class="image">
-                  <img src="imgs/cover-home-6.jpg" alt="">
+                  <img src="imgs/nong-san-sach-ha-noi-9.jpg" alt="">
                </div>
             </div>
 
@@ -93,18 +77,18 @@ include 'components/add_cart.php';
                   <a href="#" class="btn">Xem thêm</a>
                </div>
                <div class="image">
-                  <img src="imgs/cover-home-5.jpg" alt="">
+                  <img src="imgs/luontuoimoi.jpg" alt="">
                </div>
             </div>
 
             <div class="swiper-slide slide">
                <div class="content">
                   <!-- <span>mua sắm</span> -->
-                  <h4> VỰA HOA QUẢ <br> TƯƠI MÁT MÙA HÈ</h4>
+                  <h4> VỰA HOA QUẢ <br><br> TƯƠI MÁT MÙA HÈ</h4>
                   <a href="#" class="btn">Xem thêm</a>
                </div>
                <div class="image">
-                  <img src="imgs/cover-home-3.jpg " alt="">
+                  <img src="imgs/vuahoaqua.jpg " alt="">
                </div>
             </div>
 
@@ -153,7 +137,7 @@ include 'components/add_cart.php';
                     Số lượng: <?= $fetch_products['so_luong_ton']; ?>
                   </div>
                   <div class="new">
-                    Giá: <?= $fetch_products['gia']; ?>
+                    Giá: <?= $fetch_products['gia']; ?> 
                   </div>
                </form>
                <?php

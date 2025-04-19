@@ -15,7 +15,6 @@ if (isset($message)) {
     <section class="content_bg-white">
 
         <a href="home.php" class="logo"><i id="logo" class="fa-sharp-duotone fa-solid fa-tractor"></i>thegioinongsan</a>
-
         <nav class="navbar">
             <a href="#"><i class="fa-duotone fa-solid fa-phone-volume"></i> KHẨN CẤP: 1900 10854</a>
             <a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i></i>GIỜ LÀM VIỆC: 27/7</a>
@@ -25,12 +24,12 @@ if (isset($message)) {
     </section>
     <section class="flex">
         <nav class="navbar">
-            <a href="home.php"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-            <a href="about.php">Về chúng tôi</a>
-
-            
-             <a href="contact.php">Liên hệ</a>
+            <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
+            <a href="#">Quản lí sản phẩm</a>
+            <a href="#">Quản lí đơn hàng</a>
+            <a href="#">Thông tin đánh giá sản phẩm</a>
         </nav>
+
 
         <div class="icons">
             <?php

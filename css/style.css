@@ -541,6 +541,139 @@
         .category .box-container .box:hover h3 {
             color: var(--white);
         }
+        /* câp nhật thông tin sản phẩm */
+        /* Container tổng: căn giữa theo chiều ngang */
+        
+        .products .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        /* Menu bên trái */
+        
+        .menu-box {
+            border: 2px solid #00000033;
+            border-radius: 8px;
+            padding: 20px 25px;
+            background: #fff;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-box a {
+            display: block;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .menu-box a i {
+            margin-right: 8px;
+            color: #007bff;
+            font-size: 20px;
+        }
+        
+        .menu-box a:hover {
+            transform: translateX(5px);
+            color: #0b1e63;
+        }
+        
+        .menu-box a:hover i {
+            color: #0b1e63;
+        }
+        /* Form bên phải */
+        
+        .form-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 580px;
+            margin: auto;
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #3ba5f3;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0b1e63;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #152f9a;
+        }
+        
+        .product-table {
+            width: 100%;
+            margin: auto;
+            border-collapse: collapse;
+            /* margin-top: 20px; */
+            font-size: 14px;
+        }
+        
+        .product-table th,
+        .product-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .product-table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        .form-box {
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+        }
+        /* -------------------         */
         
         .products .box-container {
             display: grid;

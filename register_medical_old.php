@@ -136,13 +136,20 @@ if (isset($_SESSION['user_id'])) {
                                 });
                             </script>
                         </div>
+
                         <div class="form-group">
                             <label for="appointment">Ngày khám</label>
                             <input type="date" name="appointment" id="appointment" required>
                         </div>
-                         
+                        <div class="form-group">
+                            <label for="appointment">Ngày khám</label>
+                            <input type="date" name="appointment" id="appointment" required>
+                        </div>     <div class="form-group">
+                            <label for="appointment">Ngày khám</label>
+                            <input type="date" name="appointment" id="appointment" required>   <button type="submit" class="submit-btn" name="add_date">Xác nhận</button>
+                        </div>
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <button type="submit" class="submit-btn" name="add_date">Xác nhận</button>
+                         
                         <?php else: ?>
                             <p class="notice">Vui lòng <a href="login.php">đăng nhập</a> để đăng kí khám bệnh.</p>
                         <?php endif; ?>

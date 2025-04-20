@@ -12,11 +12,11 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $user_name = null;
 if ($user_id) {
-    $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+    $select_profile = $conn->prepare("SELECT * FROM `nguoidung` WHERE id_nguoidung = ?");
     $select_profile->execute([$user_id]);
     if ($select_profile->rowCount() > 0) {
         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-        $user_name = $fetch_profile['name'];
+        $user_name = $fetch_profile['ho_ten'];
     }
 }
 ?>
@@ -61,7 +61,7 @@ if ($user_id) {
         <section class="flex">
             <nav class="navbar">
                 <div class="dropdown">
-                    <a href="product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
+                    <a href="product.php" class="dropdown-toggle">DANH MỤC SẢN PHAM</a>
                     <div class="dropdown-content">
                         <a href="#">Rau củ sạch</a>
                         <a href="#">Bún miến</a>

@@ -36,13 +36,9 @@ include 'components/add_cart.php';
 
 <body>
    <?php
-   if (isset($_SESSION['phanquyen'])) {
-      if ($_SESSION['phanquyen'] === 'nongdan') {
-         require("components/user_header_nongdan.php");
-      }
-   } else {
+ 
       include("components/user_header.php");
-   }
+   
    ?>
    <section class="hero">
 

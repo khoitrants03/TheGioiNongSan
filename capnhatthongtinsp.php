@@ -54,7 +54,7 @@ if (isset($_SESSION['user_id'])) {
     <section class="products_1">
 
 
-        <div class="container">
+        <div class="product-wrapper">
             <div class="menu-box">
                 <a href="#"><i class="fa-solid fa-gear"></i> Quản lí</a>
                 <a href="#"><i class="fa fa-plus-square"></i> Xem chi tiết</a>
@@ -204,37 +204,30 @@ if (isset($_SESSION['user_id'])) {
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $stmt = $conn->prepare("SELECT * FROM SanPham ORDER BY ngay_tao DESC LIMIT 10");
-                $stmt->execute();
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    echo "<td>" . $row['id_sanpham'] . "</td>";
-                    echo "<td>" . $row['ten_sanpham'] . "</td>";
-                    echo "<td>" . $row['mo_ta'] . "</td>";
-                    echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
-                    echo "<td>" . $row['so_luong_ton'] . "</td>";
-                    echo "<td>" . $row['id_nongdan'] . "</td>";
-                    echo "<td>" . $row['id_danhmuc'] . "</td>";
-                    echo "<td>" . $row['id_qrcode'] . "</td>";
-                    echo "<td>" . $row['ngay_tao'] . "</td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
+    <?php
+    $stmt = $conn->prepare("SELECT * FROM SanPham ORDER BY ngay_tao DESC LIMIT 10");
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<tr>";
+        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
+        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
+        echo "<td>" . $row['mo_ta'] . "</td>";
+        echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
+        echo "<td>" . $row['so_luong_ton'] . "</td>";
+        echo "<td>" . $row['id_nongdan'] . "</td>";
+        echo "<td>" . $row['id_danhmuc'] . "</td>";
+        echo "<td>" . $row['id_qrcode'] . "</td>";
+        echo "<td>" . $row['ngay_tao'] . "</td>";
+        echo "</tr>";
+    }
+    ?>
+</tbody>
+
         </table>
     </div>
 
  
     <!-- menu section ends -->
-
-
-
-
-
-
-
-
     <!-- footer section starts  -->
     <?php include 'components/footer.php'; ?>
     <!-- footer section ends -->

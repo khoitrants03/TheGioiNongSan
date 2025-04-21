@@ -12,7 +12,7 @@ if (!isset($admin_id)) {
 
 if (isset($_GET['delete'])) {
    $delete_id = $_GET['delete'];
-   $delete_users = $conn->prepare("DELETE FROM `users` WHERE id = ?");
+   $delete_users = $conn->prepare("DELETE FROM `nguoidung` WHERE id_nguoidung = ?");
    $delete_users->execute([$delete_id]);
    $delete_order = $conn->prepare("DELETE FROM `orders` WHERE user_id = ?");
    $delete_order->execute([$delete_id]);
@@ -53,15 +53,15 @@ if (isset($_GET['delete'])) {
       <div class="box-container">
 
          <?php
-         $select_account = $conn->prepare("SELECT * FROM `users`");
+         $select_account = $conn->prepare("SELECT * FROM `nguoidung`");
          $select_account->execute();
          if ($select_account->rowCount() > 0) {
             while ($fetch_accounts = $select_account->fetch(PDO::FETCH_ASSOC)) {
          ?>
                <div class="box">
-                  <p> user id : <span><?= $fetch_accounts['id']; ?></span> </p>
-                  <p> username : <span><?= $fetch_accounts['name']; ?></span> </p>
-                  <a href="users_accounts.php?delete=<?= $fetch_accounts['id']; ?>" class="delete-btn" onclick="return confirm('Xóa tài khoản này?');">Xóa</a>
+                  <p> user id : <span><?= $fetch_accounts['id_nguoidung']; ?></span> </p>
+                  <p> username : <span><?= $fetch_accounts['ho_ten']; ?></span> </p>
+                  <a href="users_accounts.php?delete=<?= $fetch_accounts['id_nguoidung']; ?>" class="delete-btn" onclick="return confirm('Xóa tài khoản này?');">Xóa</a>
                </div>
          <?php
             }
@@ -73,6 +73,7 @@ if (isset($_GET['delete'])) {
       </div>
 
    </section>
+   <script src="../js/admin_script.js"></script>
 
    <!-- user accounts section ends -->
 

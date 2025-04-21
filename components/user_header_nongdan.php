@@ -59,14 +59,12 @@ if ($user_id) {
         </section>
 
         <section class="flex">
-        <nav class="navbar">
-            <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-            <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
-            <a href="#">Quản lí đơn hàng</a>
-            <a href="#">Thông tin đánh giá sản phẩm</a>
-        </nav>
-
-
+            <nav class="navbar">
+                <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
+                <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
+                <a href="#">Quản lí đơn hàng</a>
+                <a href="#">Thông tin đánh giá sản phẩm</a>
+            </nav>
             <div class="icons">
                 <?php
                 $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
@@ -77,6 +75,7 @@ if ($user_id) {
                 <div id="user-btn" class="fas fa-user"></div>
                 <div id="menu-btn" class="fas fa-bars"></div>
             </div>
+
 
             <div class="profile">
                 <?php if ($user_name): ?>
@@ -93,6 +92,7 @@ if ($user_id) {
             </div>
         </section>
     </header>
+    <script src="../js/script.js"></script>
 
 
 </body>

@@ -19,8 +19,7 @@ if (isset($message)) {
 
       <nav class="navbar">
          <a href="dashboard.php">Trang chủ</a>
-         <a href="bacsi.php">Bác sĩ</a>
-         <a href="placed_orders.php">Đơn hàng</a>
+          <a href="placed_orders.php">Đơn hàng</a>
          <a href="admin_accounts.php">Admin</a>
          <a href="users_accounts.php">Người dùng</a>
          <a href="messages.php">Phản hồi</a>
@@ -49,3 +48,4 @@ if (isset($message)) {
    </section>
 
 </header>
+<script src="../js/admin_script.js"></script>

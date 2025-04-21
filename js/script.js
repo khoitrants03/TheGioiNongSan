@@ -71,3 +71,21 @@ document.addEventListener('DOMContentLoaded', function() {
     calculateTotal();
     updateCartCount();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const userBtn = document.querySelector('#user-btn');
+    const profile = document.querySelector('.profile');
+
+    if (userBtn && profile) {
+        userBtn.addEventListener('click', () => {
+            profile.classList.toggle('active');
+        });
+
+        // Ẩn khi click ra ngoài
+        document.addEventListener('click', function(e) {
+            if (!userBtn.contains(e.target) && !profile.contains(e.target)) {
+                profile.classList.remove('active');
+            }
+        });
+    }
+});

@@ -611,11 +611,15 @@
         }
         
         .products .box-container .register .form-container .form-title {
-            font-size: 3rem;
-            color: #4a4a4a;
-            margin-bottom: 20px;
-            font-weight: bold;
+            font-size: 28px;
+            /* Phóng to chữ */
             text-align: center;
+            /* Căn giữa ngang */
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            /* Màu chữ đẹp hơn (tuỳ chọn) */
+            text-transform: uppercase;
         }
         /* quản lí thuốc */
         
@@ -1367,8 +1371,7 @@
         .credit span {
             color: var(--pink);
         }
-        
-        .loader {
+        /* .loader {
             position: fixed;
             top: 0;
             left: 0;
@@ -1379,7 +1382,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
+        } */
         
         .loader img {
             height: 25rem;
@@ -1387,10 +1390,11 @@
         /* admin-thuốc */
         
         table {
-            width: 80%;
+            /* width: 80%; */
             border-collapse: collapse;
-            margin-top: 20px;
-            margin-left: 7rem;
+            /* margin-top: 20px; */
+            /* margin-left: 7rem; */
+            margin: auto;
         }
         
         th,
@@ -1484,8 +1488,7 @@
             }
         }
         /* Khải */
-        
-        .info-table {
+        /* .info-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
@@ -1516,4 +1519,135 @@
         
         .info-table tbody td {
             font-size: 1.4rem;
+        } */
+        
+        .products_1 .product-wrapper {
+            display: flex;
+            gap: 20px;
+            /* Khoảng cách giữa menu và form */
         }
+        
+        .menu-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .menu-box a {
+            display: block;
+            padding: 12px 20px;
+            background-color: #f0f0f0;
+            color: #382178;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            font-size: 1.7rem;
+            /* Hiệu ứng chuyển động */
+            transform: scale(1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .menu-box a:hover {
+            background-color: #d4edda;
+            color: #1c7430;
+            transform: scale(1.03);
+            /* Phóng to nhẹ khi hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .products_1 .menu-box {
+            flex: 0 0 30%;
+            background-color: #f2f2f2;
+            /* màu nền mẫu */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .products_1 .form-box {
+            flex: 0 0 70%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-box .form-title {
+            font-size: 28px;
+            /* Phóng to chữ */
+            text-align: center;
+            /* Căn giữa ngang */
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            /* Màu chữ đẹp hơn (tuỳ chọn) */
+            text-transform: uppercase;
+        }
+        /* Optional: styling form */
+        
+        .products_1 .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .products_1 label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .products_1 input,
+        .products_1 select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .products_1 .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Khối cha */
+        
+        .container-flex {
+            display: flex;
+            gap: 30px;
+            /* Khoảng cách giữa hai khối */
+            flex-wrap: wrap;
+            /* Đảm bảo khối xuống hàng khi không đủ chỗ */
+        }
+        /* Form thêm sản phẩm */
+        
+        .form-add {
+            flex: 1;
+            /* Chiếm hết không gian còn lại */
+            min-width: 300px;
+            /* Đảm bảo form không quá nhỏ trên màn hình nhỏ */
+        }
+        /* Danh sách sản phẩm */
+        
+        .form-list {
+            flex: 1;
+            /* Chiếm hết không gian còn lại */
+            min-width: 500px;
+            /* Đảm bảo bảng không quá nhỏ trên màn hình nhỏ */
+            overflow-x: auto;
+        }
+        /* Style chung cho cả 2 box */
+        
+        .form-box {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+
+
+
+
+        

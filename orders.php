@@ -8,9 +8,14 @@ if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
 } else {
    $user_id = '';
-   header('location:home.php');
-};
-include './convert_currency.php';
+   header('location:login.php');
+}
+
+// Fetch user's orders
+$select_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ? ORDER BY placed_on DESC");
+$select_orders->execute([$user_id]);
+
+//include './convert_currency.php';
 
 ?>
 
@@ -21,7 +26,7 @@ include './convert_currency.php';
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Đặt hàng</title>
+   <title>Đơn hàng của tôi</title>
    <link rel="shortcut icon" href="./imgs/hospital-solid.svg" type="image/x-icon">
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -38,55 +43,89 @@ include './convert_currency.php';
    <!-- header section ends -->
 
    <div class="heading">
-      <h3>Đặt hàng</h3>
-      <p><a href="home.php">Trang chủ</a> <span> / Đặt hàng</span></p>
+      <h3>Đơn hàng của tôi</h3>
+      <p><a href="home.php">Trang chủ</a> <span> / Đơn hàng của tôi</span></p>
    </div>
 
    <section class="orders">
-
-      <h1 class="title">Đơn hàng của bạn</h1>
-
-      <div class="box-container">
-
+      <h1 class="title">Đơn hàng của tôi</h1>
+      <div class="orders-container">
          <?php
-         if ($user_id == '') {
-            echo '<p class="empty">vui lòng đăng nhập để xem đơn hàng của bạn!</p>';
-         } else {
-            $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ?");
-            $select_orders->execute([$user_id]);
-            if ($select_orders->rowCount() > 0) {
-               while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
+         if ($select_orders->rowCount() > 0) {
+            while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
          ?>
-                  <div class="box">
-                     <p>Thời gian : <span><?= $fetch_orders['placed_on']; ?></span></p>
-                     <p>Tên khách hàng : <span><?= $fetch_orders['name']; ?></span></p>
-                     <p>Email : <span><?= $fetch_orders['email']; ?></span></p>
-                     <p>Số điện thoại : <span><?= $fetch_orders['number']; ?></span></p>
-                     <p>Địa chỉ : <span><?= $fetch_orders['address']; ?></span></p>
-                     <p>Hình thức thanh toán : <span><?= $fetch_orders['method']; ?></span></p>
-                     <p>Đơn hàng của bạn : <span><?= $fetch_orders['total_products']; ?></span></p>
-                     <p> Trạng thái thanh toán : <span style="color:<?php if ($fetch_orders['payment_status'] == 'pending') {
-                                                                        echo 'red';
-                                                                     } else {
-                                                                        echo 'green';
-                                                                     }; ?>"><?php
-                                                                              if ($fetch_orders['payment_status'] == 'pending') {
-                                                                                 echo "Chưa giải quyết";
-                                                                              } else {
-                                                                                 echo "Hoàn thành";
-                                                                              }
-                                                                              ?></span> </p>
+               <div class="order-item">
+                  <div class="order-header">
+                     <div class="order-id">
+                        <span class="label">Mã đơn hàng:</span>
+                        <span class="value">#<?= str_pad($fetch_orders['id'], 8, '0', STR_PAD_LEFT); ?></span>
+                     </div>
+                     <div class="order-date">
+                        <span class="label">Ngày đặt:</span>
+                        <span class="value"><?= date('d/m/Y H:i:s', strtotime($fetch_orders['placed_on'])); ?></span>
+                     </div>
                   </div>
+                  <div class="order-details">
+                     <div class="products">
+                        <span class="label">Sản phẩm:</span>
+                        <span class="value"><?= $fetch_orders['total_products']; ?> sản phẩm</span>
+                     </div>
+                     <div class="total">
+                        <span class="label">Tổng tiền:</span>
+                        <span class="value"><?= number_format($fetch_orders['total_price']); ?> VNĐ</span>
+                     </div>
+                     <div class="status">
+                        <span class="label">Trạng thái:</span>
+                        <span class="value <?= $fetch_orders['payment_status']; ?>">
+                           <?php
+                           switch($fetch_orders['payment_status']) {
+                              case 'pending':
+                                 echo '<i class="fas fa-clock"></i> Chờ xác nhận';
+                                 break;
+                              case 'confirmed':
+                                 echo '<i class="fas fa-check-circle"></i> Đã xác nhận';
+                                 break;
+                              case 'processing':
+                                 echo '<i class="fas fa-box"></i> Đang xử lý';
+                                 break;
+                              case 'shipped':
+                                 echo '<i class="fas fa-truck"></i> Đang giao hàng';
+                                 break;
+                              case 'delivered':
+                                 echo '<i class="fas fa-home"></i> Đã giao hàng';
+                                 break;
+                              case 'cancelled':
+                                 echo '<i class="fas fa-times-circle"></i> Đã hủy';
+                                 break;
+                              default:
+                                 echo $fetch_orders['payment_status'];
+                           }
+                           ?>
+                        </span>
+                     </div>
+                     <?php if($fetch_orders['payment_status'] == 'shipped'): ?>
+                     <div class="tracking">
+                        <span class="label">Mã theo dõi:</span>
+                        <span class="value"><?= $fetch_orders['tracking_number']; ?></span>
+                        <a href="track_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
+                           <i class="fas fa-map-marker-alt"></i> Theo dõi đơn hàng
+                        </a>
+                     </div>
+                     <?php endif; ?>
+                  </div>
+                  <div class="order-actions">
+                     <a href="view_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
+                        <i class="fas fa-eye"></i> Xem chi tiết
+                     </a>
+                  </div>
+               </div>
          <?php
-               }
-            } else {
-               echo '<p class="empty">Chưa có đơn đặt hàng!</p>';
             }
+         } else {
+            echo '<p class="empty">Bạn chưa có đơn hàng nào!</p>';
          }
          ?>
-
       </div>
-
    </section>
 
    <!-- footer section starts  -->

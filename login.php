@@ -1,36 +1,67 @@
 <?php
 
-include '../components/connect.php';
+include './components/connect.php';
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
-
-if (!isset($admin_id)) {
-   header('location:admin_login.php');
+if(isset($_SESSION['user_id'])){
+   header('location:home.php');
 }
 
-if (isset($_POST['submit'])) {
-
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+if(isset($_POST['submit'])){
+   $email = $_POST['email'];
+   $email = filter_var($email, FILTER_SANITIZE_STRING);
    $pass = $_POST['pass'];
    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
-   $cpass = $_POST['cpass'];
-   $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-   $select_admin = $conn->prepare("SELECT * FROM `admin` WHERE name = ?");
-   $select_admin->execute([$name]);
+   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
+   $select_user->execute([$email, $pass]);
+   $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
-   if ($select_admin->rowCount() > 0) {
-      $message[] = 'Tên người dùng đã tồn tại!';
-   } else {
-      if ($pass != $cpass) {
-         $message[] = 'Mật khẩu xác nhận không khớp!';
-      } else {
-         $insert_admin = $conn->prepare("INSERT INTO `admin`(name, password) VALUES(?,?)");
-         $insert_admin->execute([$name, $pass]);
-         $message[] = 'Đăng ký thành công!';
-      }
+   if($select_user->rowCount() > 0){
+      $_SESSION['user_id'] = $row['id'];
+      header('location:home.php');
+   }else{
+      $message[] = 'Email hoặc mật khẩu không đúng!';
    }
 }
+
+?>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Đăng nhập</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<?php
+if(isset($message)){
+   foreach($message as $message){
+      echo '
+      <div class="message">
+         <span>'.$message.'</span>
+         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+      </div>
+      ';
+   }
+}
+?>
+
+<section class="form-container">
+   <form action="" method="post">
+      <h3>Đăng nhập</h3>
+      <input type="email" name="email" required placeholder="Nhập email" class="box" maxlength="50">
+      <input type="password" name="pass" required placeholder="Nhập mật khẩu" class="box" maxlength="50">
+      <input type="submit" value="Đăng nhập" class="btn" name="submit">
+      <p>Bạn chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
+   </form>
+</section>
+
+</body>
+</html>

@@ -10,6 +10,11 @@ if (isset($_SESSION['user_id'])) {
    header('location:login.php');
 }
 
+// Fetch user profile information
+$select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+$select_profile->execute([$user_id]);
+$fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+
 if (isset($_POST['order'])) {
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
@@ -62,23 +67,49 @@ if (isset($_POST['order'])) {
             <h3>Sản phẩm đã chọn</h3>
             <?php
             $grand_total = 0;
-            $cart_items[] = '';
+            $cart_items = array();
             $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
             $select_cart->execute([$user_id]);
             if ($select_cart->rowCount() > 0) {
                while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
                   $cart_items[] = $fetch_cart['name'] . ' (' . $fetch_cart['price'] . ' x ' . $fetch_cart['quantity'] . ') - ';
-                  $total_products = implode($cart_items);
-                  $grand_total += ($fetch_cart['price'] * $fetch_cart['quantity']);
+                  $subtotal = $fetch_cart['price'] * $fetch_cart['quantity'];
+                  $grand_total += $subtotal;
             ?>
-                  <p><span class="name"><?= $fetch_cart['name']; ?></span><span class="price"><?= $fetch_cart['price']; ?> VNĐ x <?= $fetch_cart['quantity']; ?></span></p>
+                  <div class="cart-item">
+                     <p><span class="name"><?= $fetch_cart['name']; ?></span></p>
+                     <p class="price-details">
+                        <span class="price"><?= number_format($fetch_cart['price']); ?> VNĐ</span>
+                        <span class="quantity">x <?= $fetch_cart['quantity']; ?></span>
+                        <span class="subtotal">= <?= number_format($subtotal); ?> VNĐ</span>
+                     </p>
+                  </div>
             <?php
                }
+               $total_products = implode($cart_items);
+            ?>
+               <div class="order-summary">
+                  <h3>Tổng đơn hàng</h3>
+                  <div class="summary-item">
+                     <span>Tổng tiền hàng:</span>
+                     <span><?= number_format($grand_total); ?> VNĐ</span>
+                  </div>
+                  <div class="summary-item">
+                     <span>Phí vận chuyển:</span>
+                     <span>30,000 VNĐ</span>
+                  </div>
+                  <div class="summary-item total">
+                     <span>Tổng thanh toán:</span>
+                     <span><?= number_format($grand_total + 30000); ?> VNĐ</span>
+                  </div>
+               </div>
+            <?php
             } else {
                echo '<p class="empty">Giỏ hàng trống!</p>';
+               $total_products = '';
+               $grand_total = 0;
             }
             ?>
-            <p class="grand-total"><span>Tổng cộng:</span><span class="price"><?= $grand_total; ?> VNĐ</span></p>
             <a href="cart.php" class="btn">Xem giỏ hàng</a>
          </div>
 
@@ -86,19 +117,23 @@ if (isset($_POST['order'])) {
          <input type="hidden" name="total_price" value="<?= $grand_total; ?>">
 
          <div class="user-info">
-            <h3>Thông tin thanh toán</h3>
-            <p><i class="fas fa-user"></i><span><?= $fetch_profile['name']; ?></span></p>
-            <p><i class="fas fa-phone"></i><span><?= $fetch_profile['number']; ?></span></p>
-            <p><i class="fas fa-envelope"></i><span><?= $fetch_profile['email']; ?></span></p>
-            <input type="text" name="address" required placeholder="Nhập địa chỉ giao hàng" class="box" maxlength="50">
-            <select name="method" class="box" required>
-               <option value="" disabled selected>Chọn phương thức thanh toán</option>
-               <option value="cash on delivery">Thanh toán khi nhận hàng</option>
-               <option value="credit card">Thẻ tín dụng</option>
-               <option value="paypal">Paypal</option>
-            </select>
-            <input type="submit" value="Đặt hàng" class="btn" name="order">
-         </div>
+   <h3>Thông tin thanh toán</h3>
+
+   <!-- Thêm 3 input cần thiết để tránh lỗi Undefined array key -->
+   <input type="text" name="name" required placeholder="Nhập họ tên" class="box" maxlength="50" value="<?= $fetch_profile['name']; ?>">
+   <input type="text" name="number" required placeholder="Nhập số điện thoại" class="box" maxlength="15" value="<?= $fetch_profile['number']; ?>">
+   <input type="email" name="email" required placeholder="Nhập email" class="box" maxlength="50" value="<?= $fetch_profile['email']; ?>">
+
+   <input type="text" name="address" required placeholder="Nhập địa chỉ giao hàng" class="box" maxlength="50">
+   <select name="method" class="box" required>
+      <option value="" disabled selected>Chọn phương thức thanh toán</option>
+      <option value="cash on delivery">Thanh toán khi nhận hàng</option>
+      <option value="credit card">Thẻ tín dụng</option>
+      <option value="paypal">Paypal</option>
+   </select>
+   <input type="submit" value="Đặt hàng" class="btn" name="order">
+</div>
+
       </form>
    </section>
 

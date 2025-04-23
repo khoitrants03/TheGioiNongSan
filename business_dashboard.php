@@ -62,7 +62,11 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<?php include 'components/user_header.php'; ?>
+<?php 
+// include 'components/user_header.php'; 
+?>
+
+
 
 <section class="dashboard">
    <div class="heading">

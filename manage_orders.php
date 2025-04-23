@@ -124,7 +124,10 @@ $select_products->execute([$user_id]);
 </head>
 <body>
 
-<?php include 'components/user_header.php'; ?>
+<?php 
+// include 'components/user_header.php'; 
+?>
+
 
 <section class="manage-orders">
    <div class="heading">

@@ -23,7 +23,7 @@ if(isset($_POST['send_request'])){
 $search = '';
 if(isset($_GET['search'])){
    $search = $_GET['search'];
-   $select_farmers = $conn->prepare("SELECT * FROM `farmer_profiles` WHERE name LIKE ? OR location LIKE ?");
+   $select_farmers = $conn->prepare("SELECT id, name, address, phone, email, location FROM `farmer_profiles` WHERE name LIKE ? OR location LIKE ?");
    $select_farmers->execute(["%$search%", "%$search%"]);
 }else{
    $select_farmers = $conn->prepare("SELECT * FROM `farmer_profiles`");
@@ -103,7 +103,10 @@ $select_connections->execute([$user_id]);
 </head>
 <body>
 
-<?php include 'components/user_header.php'; ?>
+<?php 
+// include 'components/user_header.php'; 
+?>
+
 
 <section class="farmer-connections">
    <div class="heading">

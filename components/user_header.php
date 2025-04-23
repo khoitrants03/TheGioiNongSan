@@ -7,7 +7,7 @@ include 'connect.php';
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
-    header('Location: ../login.php');
+    header('Location: ../TheGioiNongSan/home.php');
     exit;
 }
 
@@ -62,7 +62,7 @@ if ($user_id != '') {
     <!-- Header -->
     <header class="header">
         <section class="content_bg-white">
-            <a href="../TheGioiNongSan" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
+            <a href="../TheGioiNongSan/home.php" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
 
             <nav class="navbar">
                 <a href="#"><i class="fas fa-phone-volume"></i> KHẨN CẤP: 1900 10854</a>
@@ -91,12 +91,14 @@ if ($user_id != '') {
             </nav>
 
             <div class="icons">
-            <a href="orders.php">
-              <div id="user-btn" class="fas fa-user"></div>
-            </a>
-
+                <a href="orders.php">
+                    <div id="user-btn" class="fas fa-user"></div>
+                </a>
                 <a href="search_page.php" class="fas fa-search"></a>
                 <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $cart_count; ?>)</span></a>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="?logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="fas fa-sign-out-alt"></a>
+                <?php endif; ?>
                 <div id="menu-btn" class="fas fa-bars"></div>
             </div>
 
@@ -115,15 +117,11 @@ if ($user_id != '') {
                     </div>
                 </div>
                 <div class="profile-links">
-                    <a href="../profile.php" class="btn">Thông tin cá nhân</a>
-                <p class="name"><?= $fetch_profile['name']; ?></p>
-                <div class="flex">
-                    <a href="profile.php" class="btn">Thông tin cá nhân</a>
-                    <a href="orders.php" class="btn">Đơn hàng của tôi</a>
-                    <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
-                </div>
-                <div class="flex-btn">
-                    <a href="components/user_logout.php" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng xuất</a>
+                    <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                        <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                        <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    </div>
                 </div>
             </div>
         </section>

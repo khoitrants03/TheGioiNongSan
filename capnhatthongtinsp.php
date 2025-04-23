@@ -158,7 +158,7 @@ if (isset($_SESSION['user_id'])) {
             $id_nongdan = $_POST['txt_manongdan'];
             $id_danhmuc = $_POST['txt_madanhmuc'];
             $id_qrcode = $_POST['txt_qr'];
-            $ngay_tao = $_POST['txt_ngaytao']; // 👈 lấy ngày tạo từ form
+            $ngay_tao = $_POST['txt_ngaytao']; 
         
             // Chuẩn bị câu lệnh insert có thêm ngày_tao
             $insert = $conn->prepare("INSERT INTO SanPham 

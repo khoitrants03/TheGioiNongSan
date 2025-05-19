@@ -61,7 +61,7 @@ if (isset($_SESSION['user_id'])) {
                 <a href="#"><i class="fa fa-plus-square"></i> Thêm sản phẩm</a>
             </div>
 
-            <div class="form-box">
+            <div class="form-box" enctype="multipart/form-data">
                 <div class="form-title">THÊM MỚI SẢN PHẨM</div>
                 <form method="POST">
                     <div class="form-group">
@@ -83,6 +83,10 @@ if (isset($_SESSION['user_id'])) {
                     <div class="form-group">
                         <label for="txt_soluong">Số lượng</label>
                         <input type="text" id="txt_soluong" name="txt_soluong">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_img">Ảnh sản phẩm</label>
+                        <input type="file" id="txt_img" name="txt_img">
                     </div>
                     <div class="form-group">
                         <label for="txt_manongdan">Mã Nông dân</label>
@@ -149,42 +153,56 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </div>
         <?php
-        if (isset($_POST['add'])) {
-            // Lấy dữ liệu từ form
-            $ten_nongsan = $_POST['txt_tenns'];
-            $mota = $_POST['txt_mota'];
-            $gia = $_POST['txt_gia'];
-            $soluong = $_POST['txt_soluong'];
-            $id_nongdan = $_POST['txt_manongdan'];
-            $id_danhmuc = $_POST['txt_madanhmuc'];
-            $id_qrcode = $_POST['txt_qr'];
-            $ngay_tao = $_POST['txt_ngaytao']; // 👈 lấy ngày tạo từ form
-        
-            // Chuẩn bị câu lệnh insert có thêm ngày_tao
-            $insert = $conn->prepare("INSERT INTO SanPham 
-        (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc, id_qrcode, ngay_tao) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
-            // Thực thi câu lệnh
-            $success = $insert->execute([
-                $ten_nongsan,
-                $mota,
-                $gia,
-                $soluong,
-                $id_nongdan,
-                $id_danhmuc,
-                $id_qrcode,
-                $ngay_tao
-            ]);
-
-            if ($success) {
-                echo "<script>alert('Thêm sản phẩm thành công!');</script>";
-            } else {
-                echo "<script>alert('Thêm sản phẩm thất bại.');</script>";
-            }
+    if (isset($_POST['add'])) {
+        // Lấy dữ liệu từ form
+        $ten_nongsan = $_POST['txt_tenns'];
+        $mota = $_POST['txt_mota'];
+        $gia = $_POST['txt_gia'];
+        $soluong = $_POST['txt_soluong'];
+        $id_nongdan = $_POST['txt_manongdan'];
+        $id_danhmuc = $_POST['txt_madanhmuc'];
+        $id_qrcode = $_POST['txt_qr'];
+        $ngay_tao = $_POST['txt_ngaytao'];
+    
+        // Kiểm tra ảnh được upload
+        // if (isset($_FILES['txt_img']) && $_FILES['txt_img']['error'] === UPLOAD_ERR_OK) {
+            $img_name = $_FILES['txt_img']['name'];
+            $img_tmp = $_FILES['txt_img']['tmp_name'];
+            $img_target = 'imgs/' . basename($img_name);
+    
+            if (move_uploaded_file($img_tmp, $img_target)) {
+                $insert = $conn->prepare("INSERT INTO SanPham 
+                (ten_sanpham, mo_ta, gia, so_luong_ton, id_nongdan, id_danhmuc, id_qrcode, ngay_tao, img) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
+                $success = $insert->execute([
+                    $ten_nongsan,
+                    $mota,
+                    $gia,
+                    $soluong,
+                    $id_nongdan,
+                    $id_danhmuc,
+                    $id_qrcode,
+                    $ngay_tao,
+                    $img_name
+                ]);
+    
+        //         if ($success) {
+        //             echo "<script>alert('Thêm sản phẩm thành công!');</script>";
+        //         } else {
+        //             echo "<script>alert('Thêm sản phẩm thất bại.');</script>";
+        //         }
+        //     } else {
+        //         echo "<script>alert('Tải ảnh thất bại.');</script>";
+        //     }
+        // } else {
+            echo "<script>alert('Không có ảnh được chọn hoặc có lỗi khi tải ảnh.');</script>";
         }
-
+    }
         ?>
+
+
+
     </section>
     <div class="form-box">
         <div class="form-title">DANH SÁCH SẢN PHẨM MỚI TẠO</div>
@@ -204,29 +222,29 @@ if (isset($_SESSION['user_id'])) {
                 </tr>
             </thead>
             <tbody>
-    <?php
-    $stmt = $conn->prepare("SELECT * FROM SanPham ORDER BY ngay_tao DESC LIMIT 10");
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
-        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
-        echo "<td>" . $row['mo_ta'] . "</td>";
-        echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
-        echo "<td>" . $row['so_luong_ton'] . "</td>";
-        echo "<td>" . $row['id_nongdan'] . "</td>";
-        echo "<td>" . $row['id_danhmuc'] . "</td>";
-        echo "<td>" . $row['id_qrcode'] . "</td>";
-        echo "<td>" . $row['ngay_tao'] . "</td>";
-        echo "</tr>";
-    }
-    ?>
-</tbody>
+                <?php
+                $stmt = $conn->prepare("SELECT * FROM SanPham ORDER BY ngay_tao DESC LIMIT 10");
+                $stmt->execute();
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr>";
+                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
+                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
+                    echo "<td>" . $row['mo_ta'] . "</td>";
+                    echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
+                    echo "<td>" . $row['so_luong_ton'] . "</td>";
+                    echo "<td>" . $row['id_nongdan'] . "</td>";
+                    echo "<td>" . $row['id_danhmuc'] . "</td>";
+                    echo "<td>" . $row['id_qrcode'] . "</td>";
+                    echo "<td>" . $row['ngay_tao'] . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
 
         </table>
     </div>
 
- 
+
     <!-- menu section ends -->
     <!-- footer section starts  -->
     <?php include 'components/footer.php'; ?>

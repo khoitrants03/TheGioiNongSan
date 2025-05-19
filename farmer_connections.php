@@ -12,12 +12,14 @@ $user_id = $_SESSION['user_id'];
 // Handle connection request
 if(isset($_POST['send_request'])){
    $farmer_id = $_POST['farmer_id'];
-   $message = $_POST['message'];
+   $message = $_POST['message']; // đây là lời nhắn của người dùng, kiểu chuỗi
    
    $insert_request = $conn->prepare("INSERT INTO `connection_requests` (business_id, farmer_id, message, status) VALUES (?, ?, ?, 'pending')");
    $insert_request->execute([$user_id, $farmer_id, $message]);
-   $message[] = 'Đã gửi yêu cầu kết nối thành công!';
+
+   $notification = 'Đã gửi yêu cầu kết nối thành công!';
 }
+
 
 // Search farmers
 $search = '';

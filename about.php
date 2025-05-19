@@ -43,7 +43,7 @@ if (isset($_SESSION['user_id'])) {
    <!-- header section ends -->
 
    <div class="heading">
-      <h3>Về chúng tôi</h3>
+      <h3>Về chúng tôi1</h3>
       <p><a href="home.php">Trang chủ</a> <span> / Giới thiệu</span></p>
    </div>
 

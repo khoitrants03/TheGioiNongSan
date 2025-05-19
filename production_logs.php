@@ -17,13 +17,13 @@ if(isset($_POST['add_log'])){
    $method = $_POST['method'];
    $notes = $_POST['notes'];
 
-   $insert_log = $conn->prepare("INSERT INTO `production_logs` (business_id, date, fertilizer, pesticide, method, notes) VALUES (?, ?, ?, ?, ?, ?)");
+   $insert_log = $conn->prepare("INSERT INTO `production_logs` (business_id, timestamp , fertilizer, pesticide, method, notes) VALUES (?, ?, ?, ?, ?, ?)");
    $insert_log->execute([$user_id, $date, $fertilizer, $pesticide, $method, $notes]);
    $message[] = 'Đã thêm nhật ký sản xuất thành công!';
 }
 
 // Fetch production logs
-$select_logs = $conn->prepare("SELECT * FROM `production_logs` WHERE business_id = ? ORDER BY date DESC");
+$select_logs = $conn->prepare("SELECT * FROM `production_logs` WHERE business_id = ? ORDER BY timestamp DESC");
 $select_logs->execute([$user_id]);
 
 ?>
@@ -122,7 +122,7 @@ $select_logs->execute([$user_id]);
          <div class="log-item">
             <div class="log-date">
                <i class="fas fa-calendar"></i>
-               <?= date('d/m/Y', strtotime($fetch_log['date'])); ?>
+               <?= date('d/m/Y', strtotime($fetch_log['timestamp'])); ?>
             </div>
             <div class="log-details">
                <p><strong>Phân bón:</strong> <?= $fetch_log['fertilizer']; ?></p>

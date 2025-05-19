@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
             $delete = $conn->prepare("DELETE FROM SanPham WHERE id_sanpham = ?");
             $delete->execute([$product_id]);
 
-            echo "<script>alert('Đã xoá sản phẩm!'); window.location.href='danh_sach_sanpham.php';</script>";
+            echo "<script>alert('Đã xoá sản phẩm!'); window.location.href='sanpham_chitiet.php';</script>";
             exit;
         }
 
@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
         $update = $conn->prepare("UPDATE SanPham SET ten_sanpham=?, mo_ta=?, gia=?, so_luong_ton=? WHERE id_sanpham=?");
         $update->execute([$ten_sanpham, $mo_ta, $gia, $so_luong_ton, $product_id]);
 
-        echo "<script>alert('Cập nhật thành công!');</script>";
+        echo "<script>alert('Cập nhật thành công!');window.location.href='capnhatthongtinsp.php';</script>";
     }
 
     // Lấy lại dữ liệu sau cập nhật hoặc trước khi hiển thị

@@ -129,7 +129,7 @@ include 'components/add_cart.php';
                   <input type="hidden" name="new" value="<?= $fetch_products['gia']; ?>">
                   <input type="hidden" name="image" value="<?= $fetch_products['img']; ?>">
                   <a href="product_detail.php?pid=<?= $fetch_products['ten_sanpham']; ?>" class="fas fa-eye"></a>
-                  <img src="uploaded_img/<?= $fetch_products['img']; ?>" alt="">
+                  <img src="imgs/<?= $fetch_products['img']; ?>" alt="">
                   <div class="new">
                      Tên sản phẩm: <?= $fetch_products['ten_sanpham']; ?>
                   </div>

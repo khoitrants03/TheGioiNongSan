@@ -117,13 +117,13 @@ if ($user_id != '') {
                         <?php endif; ?>
                     </div>
                     <div class="profile-info">
-                        <h3><?= $fetch_profile['name']; ?></h3>
+                        <h3><?= $fetch_profile['ho_ten']; ?></h3>
                         <p><?= $fetch_profile['email']; ?></p>
                     </div>
                 </div>
                 <div class="profile-links">
                     <a href="../profile.php" class="btn">Thông tin cá nhân</a>
-                <p class="name"><?= $fetch_profile['name']; ?></p>
+                <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
                 <div class="flex">
                     <a href="profile.php" class="btn">Thông tin cá nhân</a>
                     <a href="orders.php" class="btn">Đơn hàng của tôi</a>

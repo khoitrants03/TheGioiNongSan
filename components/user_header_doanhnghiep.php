@@ -61,10 +61,10 @@ if ($user_id) {
         <section class="flex">
             <nav class="navbar">
                 <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-                <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
-                <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
+                <!-- <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a> -->
+                <a href="quanlinhatkisanxuat_doanhnghiep.php">Quản lí sản xuất</a>
                 <a href="#">Quản lí đơn hàng</a>
-                <a href="#">Thông tin đánh giá sản phẩm</a>
+                <!-- <a href="#">Thông tin đánh giá sản phẩm</a> -->
             </nav>
             <div class="icons">
                 <?php

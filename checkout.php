@@ -118,11 +118,19 @@ if (isset($_POST['order'])) {
 
          <div class="user-info">
    <h3>Thông tin thanh toán</h3>
+   <?php
+$name_value = $number_value = $email_value = '';
 
+if ($fetch_profile) {
+    $name_value = htmlspecialchars($fetch_profile['name']);
+    $number_value = htmlspecialchars($fetch_profile['number']);
+    $email_value = htmlspecialchars($fetch_profile['email']);
+}
+?>
    <!-- Thêm 3 input cần thiết để tránh lỗi Undefined array key -->
-   <input type="text" name="name" required placeholder="Nhập họ tên" class="box" maxlength="50" value="<?= $fetch_profile['name']; ?>">
-   <input type="text" name="number" required placeholder="Nhập số điện thoại" class="box" maxlength="15" value="<?= $fetch_profile['number']; ?>">
-   <input type="email" name="email" required placeholder="Nhập email" class="box" maxlength="50" value="<?= $fetch_profile['email']; ?>">
+   <input type="text" name="name" required placeholder="Nhập họ tên" class="box" maxlength="50" value="<?= $name_value; ?>">
+<input type="text" name="number" required placeholder="Nhập số điện thoại" class="box" maxlength="15" value="<?= $number_value; ?>">
+<input type="email" name="email" required placeholder="Nhập email" class="box" maxlength="50" value="<?= $email_value; ?>">
 
    <input type="text" name="address" required placeholder="Nhập địa chỉ giao hàng" class="box" maxlength="50">
    <select name="method" class="box" required>

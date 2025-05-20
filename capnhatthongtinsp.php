@@ -4,12 +4,18 @@ include 'components/connect.php';
 
 session_start();
 
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-} else {
-    $user_id = '';
-}
+// if (isset($_SESSION['user_id'])) {
+//     $user_id = $_SESSION['user_id'];
+// } else {
+//     $user_id = '';
+// }
 ;
+$id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+if (!$id_nongdan) {
+    echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,12 +62,12 @@ if (isset($_SESSION['user_id'])) {
 
         <div class="product-wrapper">
             <div class="menu-box">
-                <a href="#"><i class="fa-solid fa-gear"></i> Quản lí</a>
+                <a href="quanlisanpham.php"><i class="fa-solid fa-gear"></i> Quản lí</a>
                 <a href="#"><i class="fa fa-plus-square"></i> Xem chi tiết</a>
                 <a href="#"><i class="fa fa-plus-square"></i> Thêm sản phẩm</a>
             </div>
 
-            <div class="form-box">
+            <div class="form-box" enctype="multipart/form-data">
                 <div class="form-title">THÊM MỚI SẢN PHẨM</div>
                 <form method="POST">
                     <div class="form-group">
@@ -85,21 +91,13 @@ if (isset($_SESSION['user_id'])) {
                         <input type="text" id="txt_soluong" name="txt_soluong">
                     </div>
                     <div class="form-group">
+                        <label for="txt_img">Ảnh sản phẩm</label>
+                        <input type="file" id="txt_img" name="txt_img">
+                    </div>
+                    <div class="form-group">
                         <label for="txt_manongdan">Mã Nông dân</label>
-                        <select id="txt_manongdan" name="txt_manongdan">
-                            <?php
-                            $query = $conn->prepare("SELECT id_nguoidung FROM NguoiDung");
-                            $query->execute();
-                            if ($query->rowCount() > 0) {
-                                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value='" . $row['id_nguoidung'] . "'>" . $row['id_nguoidung'] . "</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No  available</option>";
-                            }
-                            ?>
-                        </select>
-
+                        <input type="text" class="form-control" id="txt_manongdan" name="txt_manongdan"
+                            value="<?php echo htmlspecialchars($id_nongdan); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="txt_madanhmuc">Mã danh mục</label>
@@ -136,12 +134,22 @@ if (isset($_SESSION['user_id'])) {
                     <div class="form-group">
                         <label for="txt_ngaytao">Ngày tạo</label>
                         <input type="datetime-local" id="txt_ngaytao" name="txt_ngaytao">
-
-                        <script>
-                            // Lấy ngày hiện tại và thiết lập giá trị cho thẻ input
-                            document.getElementById("txt_ngaytao").value = new Date().toISOString().split('T')[0];
-                        </script>
                     </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const now = new Date();
+
+                            const year = now.getFullYear();
+                            const month = String(now.getMonth() + 1).padStart(2, '0'); // tháng bắt đầu từ 0
+                            const day = String(now.getDate()).padStart(2, '0');
+                            const hours = String(now.getHours()).padStart(2, '0');
+                            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                            const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+                            document.getElementById("txt_ngaytao").value = localDatetime;
+                        });
+                    </script>
                     <div class="form-group">
                         <button type="submit" name="add" class="submit-btn">Xác nhận</button>
                     </div>
@@ -158,8 +166,8 @@ if (isset($_SESSION['user_id'])) {
             $id_nongdan = $_POST['txt_manongdan'];
             $id_danhmuc = $_POST['txt_madanhmuc'];
             $id_qrcode = $_POST['txt_qr'];
-            $ngay_tao = $_POST['txt_ngaytao']; 
-        
+            $ngay_tao = $_POST['txt_ngaytao'];
+
             // Chuẩn bị câu lệnh insert có thêm ngày_tao
             $insert = $conn->prepare("INSERT INTO SanPham 
         (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc, id_qrcode, ngay_tao) 
@@ -183,8 +191,10 @@ if (isset($_SESSION['user_id'])) {
                 echo "<script>alert('Thêm sản phẩm thất bại.');</script>";
             }
         }
-
         ?>
+
+
+
     </section>
     <div class="form-box">
         <div class="form-title">DANH SÁCH SẢN PHẨM MỚI TẠO</div>
@@ -204,32 +214,33 @@ if (isset($_SESSION['user_id'])) {
                 </tr>
             </thead>
             <tbody>
-    <?php
-    $stmt = $conn->prepare("SELECT * FROM SanPham ORDER BY ngay_tao DESC LIMIT 10");
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
-        echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
-        echo "<td>" . $row['mo_ta'] . "</td>";
-        echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
-        echo "<td>" . $row['so_luong_ton'] . "</td>";
-        echo "<td>" . $row['id_nongdan'] . "</td>";
-        echo "<td>" . $row['id_danhmuc'] . "</td>";
-        echo "<td>" . $row['id_qrcode'] . "</td>";
-        echo "<td>" . $row['ngay_tao'] . "</td>";
-        echo "</tr>";
-    }
-    ?>
-</tbody>
+                <?php
+                $stmt = $conn->prepare("SELECT * FROM SanPham WHERE id_nongdan = ? ORDER BY ngay_tao DESC LIMIT 10");
+                $stmt->execute([$id_nongdan]);
+                // $stmt->execute();
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr>";
+                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
+                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
+                    echo "<td>" . $row['mo_ta'] . "</td>";
+                    echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
+                    echo "<td>" . $row['so_luong_ton'] . "</td>";
+                    echo "<td>" . $row['id_nongdan'] . "</td>";
+                    echo "<td>" . $row['id_danhmuc'] . "</td>";
+                    echo "<td>" . $row['id_qrcode'] . "</td>";
+                    echo "<td>" . $row['ngay_tao'] . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
 
         </table>
     </div>
 
- 
+
     <!-- menu section ends -->
     <!-- footer section starts  -->
-    <?php include 'components/footer.php'; ?>
+    <?php include 'components/footer_admin.php'; ?>
     <!-- footer section ends -->
 
 

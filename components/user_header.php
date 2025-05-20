@@ -112,16 +112,28 @@ if ($user_id != '') {
                         <?php endif; ?>
                     </div>
                     <div class="profile-info">
-                        <h3><?= $fetch_profile['name']; ?></h3>
+                        <h3><?= $fetch_profile['ho_ten']; ?></h3>
                         <p><?= $fetch_profile['email']; ?></p>
                     </div>
                 </div>
                 <div class="profile-links">
+<<<<<<< HEAD
                     <div class="flex">
                         <a href="profile.php" class="btn">Thông tin cá nhân</a>
                         <a href="orders.php" class="btn">Đơn hàng của tôi</a>
                         <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
                     </div>
+=======
+                    <a href="../profile.php" class="btn">Thông tin cá nhân</a>
+                <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
+                <div class="flex">
+                    <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                    <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                    <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                </div>
+                <div class="flex-btn">
+                    <a href="components/user_logout.php" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng xuất</a>
+>>>>>>> 8c59b9a2bb2d6bdfbff6e180e4787ea4453da064
                 </div>
             </div>
         </section>

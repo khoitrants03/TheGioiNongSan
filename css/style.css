@@ -250,7 +250,7 @@
         
         .btn:hover,
         .delete-btn:hover {
-            letter-spacing: .2rem;
+            letter-spacing: 0.0.5rem;
         }
         
         .disabled {
@@ -639,7 +639,7 @@
         .form-group label {
             font-size: 2rem;
             color: #4a4a4a;
-            width: 13rem;
+            width: 17rem;
             margin-right: 2rem;
         }
         

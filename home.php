@@ -37,9 +37,22 @@ include 'components/add_cart.php';
 <body>
 
    <?php
+<<<<<<< HEAD
     
    include("components/user_header.php");
    
+=======
+   if (isset($_SESSION['phanquyen'])) {
+      if ($_SESSION['phanquyen'] === 'nongdan') {
+         require("components/user_header_nongdan.php");
+      }
+      if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+         require("components/user_header_doanhnghiep.php");
+      }
+   } else {
+      include("components/user_header.php");
+   }
+>>>>>>> 8c59b9a2bb2d6bdfbff6e180e4787ea4453da064
    ?>
 
    <section class="hero">

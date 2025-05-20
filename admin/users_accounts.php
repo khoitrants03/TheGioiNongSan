@@ -57,13 +57,16 @@ if (isset($_GET['delete'])) {
          $select_account->execute();
          if ($select_account->rowCount() > 0) {
             while ($fetch_accounts = $select_account->fetch(PDO::FETCH_ASSOC)) {
-         ?>
+               ?>
                <div class="box">
                   <p> user id : <span><?= $fetch_accounts['id_nguoidung']; ?></span> </p>
                   <p> username : <span><?= $fetch_accounts['ho_ten']; ?></span> </p>
-                  <a href="users_accounts.php?delete=<?= $fetch_accounts['id_nguoidung']; ?>" class="delete-btn" onclick="return confirm('Xóa tài khoản này?');">Xóa</a>
+                  <p> Phân quyền : <span><?= $fetch_accounts['phanquyen']; ?></span> </p>
+
+                  <a href="users_accounts.php?delete=<?= $fetch_accounts['id_nguoidung']; ?>" class="delete-btn"
+                     onclick="return confirm('Xóa tài khoản này?');">Xóa</a>
                </div>
-         <?php
+               <?php
             }
          } else {
             echo '<p class="empty">Không có tài khoản người dùng!</p>';

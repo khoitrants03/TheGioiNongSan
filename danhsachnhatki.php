@@ -42,6 +42,9 @@ if (!$id_nongdan) {
         if ($_SESSION['phanquyen'] === 'nongdan') {
             require("components/user_header_nongdan.php");
         }
+        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+            require("components/user_header_doanhnghiep.php");
+        }
     } else {
         include("components/user_header.php");
     }
@@ -68,44 +71,44 @@ if (!$id_nongdan) {
             </div>
             <!-- #endregion -->
     </section>
-   <div class="form-box">
-    <div class="form-title">DANH SÁCH Các Nhật Kí</div>
+    <div class="form-box">
+        <div class="form-title">DANH SÁCH Các Nhật Kí</div>
 
-    <table class="product-table">
-        <thead>
-            <tr>
-                <th>ID Nông Dân</th>
-                <th>Tên</th>
-                <th>Vị trí</th>
-                <th>Phương pháp gieo trồng</th>
-                <th>Ngày gieo trồng</th>
-                <th>Ngày thu hoạch</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $stmt = $conn->prepare("SELECT tt.id_nongdan, tt.id, tt.vi_tri_trang_trai, tt.phuong_phap_trong_trot, 
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>ID Nông Dân</th>
+                    <th>Tên</th>
+                    <th>Vị trí</th>
+                    <th>Phương pháp gieo trồng</th>
+                    <th>Ngày gieo trồng</th>
+                    <th>Ngày thu hoạch</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $stmt = $conn->prepare("SELECT tt.id_nongdan, tt.id, tt.vi_tri_trang_trai, tt.phuong_phap_trong_trot, 
                                            tt.ngay_gieo_trong, tt.ngay_thu_hoach, nd.ho_ten 
                                     FROM thongtinnongdan tt 
                                     JOIN nguoidung nd ON tt.id_nongdan = nd.id_nguoidung 
                                     WHERE tt.id_nongdan = ? 
                                     LIMIT 10");
-            $stmt->execute([$id_nongdan]);
+                $stmt->execute([$id_nongdan]);
 
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr onclick=\"window.location.href='chitiet_nhatki.php?id=" . $row['id'] . "'\" style='cursor: pointer;'>";
-                echo "<td>" . htmlspecialchars($row['id_nongdan']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['ho_ten']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['vi_tri_trang_trai']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['phuong_phap_trong_trot']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['ngay_gieo_trong']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['ngay_thu_hoach']) . "</td>";
-                echo "</tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr onclick=\"window.location.href='chitiet_nhatki.php?id=" . $row['id'] . "'\" style='cursor: pointer;'>";
+                    echo "<td>" . htmlspecialchars($row['id_nongdan']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['ho_ten']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vi_tri_trang_trai']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['phuong_phap_trong_trot']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['ngay_gieo_trong']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['ngay_thu_hoach']) . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 
 
 

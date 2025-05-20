@@ -56,10 +56,10 @@ if (!isset($admin_id)) {
                $total_pendings += $fetch_pendings['total_price'];
             }
             ?>
-            <h3><?php echo currency_format($total_pendings) ?></h3>
+            <!-- <h3><?php echo currency_format($total_pendings) ?></h3>
 
             <p>Các bài viết</p>
-            <a href="content.php" class="btn">Thêm bài viết</a>
+            <a href="content.php" class="btn">Thêm bài viết</a> -->
 
          </div>
 

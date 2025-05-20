@@ -38,7 +38,10 @@ if (!$id_nongdan) {
     <!-- header section starts  -->
     <?php
 
-    if (isset($_SESSION['phanquyen'])) {
+     if (isset($_SESSION['phanquyen'])) {
+        if ($_SESSION['phanquyen'] === 'nongdan') {
+            require("components/user_header_nongdan.php");
+        }
         if ($_SESSION['phanquyen'] === 'doanhnghiep') {
             require("components/user_header_doanhnghiep.php");
         }

@@ -43,6 +43,9 @@ if (!$id_nongdan) {
         if ($_SESSION['phanquyen'] === 'nongdan') {
             require("components/user_header_nongdan.php");
         }
+        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+            require("components/user_header_doanhnghiep.php");
+        }
     } else {
         include("components/user_header.php");
     }

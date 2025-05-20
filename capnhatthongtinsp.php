@@ -73,6 +73,7 @@ if (!$id_nongdan) {
                     <div class="form-group">
                         <label for="txt_manongsan">Mã nông sản</label>
                         <input type="text" id="txt_manongsan" name="txt_manongsan">
+                        
                     </div>
                     <div class="form-group">
                         <label for="txt_tenns">Tên nông sản</label>

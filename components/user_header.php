@@ -7,7 +7,7 @@ include 'connect.php';
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
-    header('Location: ../login.php');
+    header('Location: ../TheGioiNongSan/home.php');
     exit;
 }
 
@@ -16,17 +16,11 @@ $user_id = '';
 $user_name = '';
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
-} else {
-    $user_id = '';
-}
-
-$user_name = null;
-if ($user_id) {
-    $select_profile = $conn->prepare("SELECT * FROM `nguoidung` WHERE id_nguoidung = ?");
+    $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
     $select_profile->execute([$user_id]);
     if($select_profile->rowCount() > 0){
         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-        $user_name = $fetch_profile['ho_ten'];
+        $user_name = $fetch_profile['name'];
     }
 }
 
@@ -68,7 +62,7 @@ if ($user_id != '') {
     <!-- Header -->
     <header class="header">
         <section class="content_bg-white">
-            <a href="../TheGioiNongSan" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
+            <a href="../TheGioiNongSan/home.php" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
 
             <nav class="navbar">
                 <a href="#"><i class="fas fa-phone-volume"></i> KHẨN CẤP: 1900 10854</a>
@@ -80,7 +74,7 @@ if ($user_id != '') {
         <section class="flex">
             <nav class="navbar">
                 <div class="dropdown">
-                    <a href="product.php" class="dropdown-toggle">DANH MỤC SẢN PHAM</a>
+                    <a href="../product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
                     <div class="dropdown-content">
                         <a href="#">Rau củ sạch</a>
                         <a href="#">Bún miến</a>
@@ -97,13 +91,14 @@ if ($user_id != '') {
             </nav>
 
             <div class="icons">
-                <?php
-                $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
-                $count_cart_items->execute([$user_id]);
-                $total_cart_items = $count_cart_items->rowCount();
-                ?>
-                <a href="search.php"><i class="fas fa-search"></i></a>
-                <div id="user-btn" class="fas fa-user"></div>
+                <a href="orders.php">
+                    <div id="user-btn" class="fas fa-user"></div>
+                </a>
+                <a href="search_page.php" class="fas fa-search"></a>
+                <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $cart_count; ?>)</span></a>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="?logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="fas fa-sign-out-alt"></a>
+                <?php endif; ?>
                 <div id="menu-btn" class="fas fa-bars"></div>
             </div>
 
@@ -122,6 +117,13 @@ if ($user_id != '') {
                     </div>
                 </div>
                 <div class="profile-links">
+<<<<<<< HEAD
+                    <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                        <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                        <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    </div>
+=======
                     <a href="../profile.php" class="btn">Thông tin cá nhân</a>
                 <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
                 <div class="flex">
@@ -131,11 +133,13 @@ if ($user_id != '') {
                 </div>
                 <div class="flex-btn">
                     <a href="components/user_logout.php" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng xuất</a>
+>>>>>>> 8c59b9a2bb2d6bdfbff6e180e4787ea4453da064
                 </div>
             </div>
         </section>
     </header>
 
+    <script src="../js/cart.js"></script>
     <script src="../js/script.js"></script>
 </body>
 

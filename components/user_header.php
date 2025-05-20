@@ -68,7 +68,7 @@ if ($user_id != '') {
     <!-- Header -->
     <header class="header">
         <section class="content_bg-white">
-            <a href="../TheGioiNongSan" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
+            <a href="../TheGioiNongSan/home.php" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
 
             <nav class="navbar">
                 <a href="#"><i class="fas fa-phone-volume"></i> KHẨN CẤP: 1900 10854</a>

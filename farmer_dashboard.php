@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
    if ($select_user->rowCount() > 0) {
       $_SESSION['user_id'] = $row['id_nguoidung'];
       $_SESSION['phanquyen'] = $row['phanquyen']; 
-      header('location:home.php');
+      header('location:capnhatthongtinsp.php');
       exit;
    } else {
       $message[] = 'Sai tài khoản hoặc mật khẩu!';

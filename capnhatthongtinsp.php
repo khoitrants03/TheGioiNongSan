@@ -116,22 +116,7 @@ if (!$id_nongdan) {
                             ?>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="txt_qr">Mã QR </label>
-                        <select id="txt_qr" name="txt_qr">
-                            <?php
-                            $query = $conn->prepare("SELECT id_qrcode FROM qrcode");
-                            $query->execute();
-                            if ($query->rowCount() > 0) {
-                                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value='" . $row['id_qrcode'] . "'>" . $row['id_qrcode'] . "</option>";
-                                }
-                            } else {
-                                echo "<option value=''>No  available</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
+                     
                     <div class="form-group">
                         <label for="txt_ngaytao">Ngày tạo</label>
                         <input type="datetime-local" id="txt_ngaytao" name="txt_ngaytao">
@@ -166,13 +151,12 @@ if (!$id_nongdan) {
             $soluong = $_POST['txt_soluong'];
             $id_nongdan = $_POST['txt_manongdan'];
             $id_danhmuc = $_POST['txt_madanhmuc'];
-            $id_qrcode = $_POST['txt_qr'];
-            $ngay_tao = $_POST['txt_ngaytao'];
+             $ngay_tao = $_POST['txt_ngaytao'];
 
             // Chuẩn bị câu lệnh insert có thêm ngày_tao
             $insert = $conn->prepare("INSERT INTO SanPham 
-        (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc, id_qrcode, ngay_tao) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc,   ngay_tao) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             // Thực thi câu lệnh
             $success = $insert->execute([
@@ -182,8 +166,7 @@ if (!$id_nongdan) {
                 $soluong,
                 $id_nongdan,
                 $id_danhmuc,
-                $id_qrcode,
-                $ngay_tao
+                 $ngay_tao
             ]);
 
             if ($success) {
@@ -197,7 +180,7 @@ if (!$id_nongdan) {
 
 
     </section>
-    <div class="form-box">
+    <section class="products_1">
         <div class="form-title">DANH SÁCH SẢN PHẨM MỚI TẠO</div>
 
         <table class="product-table">
@@ -210,8 +193,7 @@ if (!$id_nongdan) {
                     <th>Số lượng</th>
                     <th>Nông dân</th>
                     <th>Danh mục</th>
-                    <th>QR Code</th>
-                    <th>Ngày tạo</th>
+                     <th>Ngày tạo</th>
                 </tr>
             </thead>
             <tbody>
@@ -228,15 +210,14 @@ if (!$id_nongdan) {
                     echo "<td>" . $row['so_luong_ton'] . "</td>";
                     echo "<td>" . $row['id_nongdan'] . "</td>";
                     echo "<td>" . $row['id_danhmuc'] . "</td>";
-                    echo "<td>" . $row['id_qrcode'] . "</td>";
-                    echo "<td>" . $row['ngay_tao'] . "</td>";
+                     echo "<td>" . $row['ngay_tao'] . "</td>";
                     echo "</tr>";
                 }
                 ?>
             </tbody>
 
         </table>
-    </div>
+    </section>
 
 
     <!-- menu section ends -->

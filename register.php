@@ -1,59 +1,56 @@
 <?php
 
 include 'components/connect.php';
-
 session_start();
 
-if (isset($_SESSION['user_id'])) {
-   $user_id = $_SESSION['user_id'];
-} else {
-   $user_id = '';
-}
-;
+$user_id = $_SESSION['user_id'] ?? '';
 
 if (isset($_POST['submit'])) {
+   $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+   $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+   $number = filter_var($_POST['number'], FILTER_SANITIZE_STRING);
+   $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
+   $cpass = filter_var($_POST['cpass'], FILTER_SANITIZE_STRING);
+   $phanquyen = filter_var($_POST['phanquyen'], FILTER_SANITIZE_STRING);
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $email = $_POST['email'];
-   $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $number = $_POST['number'];
-   $number = filter_var($number, FILTER_SANITIZE_STRING);
-   $pass = $_POST['pass'];
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
-   $cpass = $_POST['cpass'];
-   $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
-   $phanquyen = filter_var($_POST['phanquyen']);
-   $phanquyen = filter_var($phanquyen, FILTER_SANITIZE_STRING);
+   $dia_chi = ''; // Bạn có thể cập nhật theo input form nếu có
+   $id_vaitro = 2; // Ví dụ mặc định là 2 cho người dùng thường
+   $ngay_tao = date('Y-m-d H:i:s');
 
-   
-
-   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? OR number = ?");
+   // Kiểm tra email hoặc số điện thoại đã tồn tại
+   $select_user = $conn->prepare("SELECT * FROM nguoidung WHERE email = ? OR so_dien_thoai = ?");
    $select_user->execute([$email, $number]);
-   $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
    if ($select_user->rowCount() > 0) {
       $message[] = 'Email hoặc số điện thoại đã tồn tại!';
    } else {
-      if ($pass != $cpass) {
+      if ($pass !== $cpass) {
          $message[] = 'Mật khẩu không khớp!';
       } else {
-         $insert_user = $conn->prepare("INSERT INTO `users`(name, email, number, password,phanquyen) VALUES(?,?,?,?,?)");
-         $insert_user->execute([$name, $email, $number, $cpass, $phanquyen]);
-         $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
-         $select_user->execute([$email, $pass]);
-         $row = $select_user->fetch(PDO::FETCH_ASSOC);
-         if ($select_user->rowCount() > 0) {
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['phanquyen'] = $row['phanquyen'];
+         $hash_password = password_hash($pass, PASSWORD_DEFAULT);
 
-            header('location:home.php');
+         $insert_user = $conn->prepare("
+            INSERT INTO nguoidung (ho_ten, email, mat_khau, so_dien_thoai, dia_chi, id_vaitro, ngay_tao, phanquyen) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+         ");
+         $insert_user->execute([$name, $email, $hash_password, $number, $dia_chi, $id_vaitro, $ngay_tao, $phanquyen]);
+
+         // Đăng nhập ngay sau khi đăng ký
+         $select_user = $conn->prepare("SELECT * FROM nguoidung WHERE email = ?");
+         $select_user->execute([$email]);
+         $row = $select_user->fetch(PDO::FETCH_ASSOC);
+
+         if ($row && password_verify($pass, $row['mat_khau'])) {
+            $_SESSION['user_id'] = $row['id_nguoidung'];
+            $_SESSION['phanquyen'] = $row['phanquyen'];
+            header('location: home.php');
+            exit;
          }
       }
    }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +80,7 @@ if (isset($_POST['submit'])) {
       <form action="" method="post">
          <h3>Đăng ký</h3>
          <input type="text" name="name" required placeholder="Nhập họ và tên của bạn" class="box" maxlength="50">
-         <input type="text" name="phanquyen" class="box" maxlength="50" style="display: none;" value="benhnhan">
+         <input type="text" name="phanquyen" class="box" maxlength="50" style="display: none;" value="khachhang">
 
          <input type="email" name="email" required placeholder="Nhập email của bạn" class="box" maxlength="50"
             oninput="this.value = this.value.replace(/\s/g, '')">
@@ -99,24 +96,7 @@ if (isset($_POST['submit'])) {
 
    </section>
 
-
-
-
-
-
-
-
-
-
-
    <?php include 'components/footer.php'; ?>
-
-
-
-
-
-
-
    <!-- custom js file link  -->
    <script src="js/script.js"></script>
 

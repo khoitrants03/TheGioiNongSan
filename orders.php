@@ -34,6 +34,33 @@ $select_orders->execute([$user_id]);
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
 
+   <style>
+   .order-item {
+       border: 2px solid #1976d2;
+       border-radius: 10px;
+       background: #fff;
+       margin-bottom: 24px;
+       padding: 20px 18px;
+       box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+       transition: box-shadow 0.2s, border-color 0.2s;
+   }
+   .order-item:hover {
+       border-color: #1565c0;
+       box-shadow: 0 4px 16px rgba(25, 118, 210, 0.18);
+       background: #f5faff;
+   }
+   .order-item .order-header {
+       font-weight: bold;
+       font-size: 1.15em;
+       margin-bottom: 10px;
+       color: #1976d2;
+   }
+   .order-item .order-info {
+       margin-bottom: 8px;
+       color: #333;
+   }
+   </style>
+
 </head>
 
 <body>
@@ -105,8 +132,8 @@ $select_orders->execute([$user_id]);
                      </div>
                      <?php if($fetch_orders['payment_status'] == 'shipped'): ?>
                      <div class="tracking">
-                        <span class="label">Mã theo dõi:</span>
-                        <span class="value"><?= $fetch_orders['tracking_number']; ?></span>
+                        
+                        
                         <a href="track_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
                            <i class="fas fa-map-marker-alt"></i> Theo dõi đơn hàng
                         </a>
@@ -114,9 +141,9 @@ $select_orders->execute([$user_id]);
                      <?php endif; ?>
                   </div>
                   <div class="order-actions">
-                     <a href="view_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
-                        <i class="fas fa-eye"></i> Xem chi tiết
-                     </a>
+                    <!-- <a href="view_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
+                        <i class="fas fa-eye"></i> Xem chi tiết 
+                     </a>-->
                   </div>
                </div>
          <?php

@@ -1,290 +1,298 @@
 <?php
-include 'components/connect.php';
 session_start();
+require_once 'components/connect.php';
 
-if(!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'business'){
-   header('location:login.php');
-   exit();
+$business_id = $_SESSION['user_id'];
+
+// Xử lý cập nhật trạng thái đơn hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['new_status'])) {
+    $order_id = $_POST['order_id'];
+    $new_status = $_POST['new_status'];
+
+    // Kiểm tra đơn hàng có tồn tại và thuộc doanh nghiệp này không
+    $stmt = $conn->prepare("SELECT payment_status FROM orders WHERE id = :id AND business_id = :business_id");
+    $stmt->bindParam(':id', $order_id, PDO::PARAM_INT);
+    $stmt->bindParam(':business_id', $business_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$order) {
+        $message = "Đơn hàng không tồn tại hoặc đã bị xóa trước đó.";
+    } elseif (in_array($order['payment_status'], ['completed', 'shipped']) && $new_status !== 'cancelled') {
+        $message = "Bạn không thể chỉnh sửa đơn hàng này vì đã được xử lý hoặc đang giao hàng.";
+    } else {
+        // Cập nhật trạng thái
+        $stmt = $conn->prepare("UPDATE orders SET payment_status = :status WHERE id = :id");
+        $stmt->bindParam(':status', $new_status, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $order_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Gửi thông báo (giả lập)
+        if ($new_status === 'processing') {
+            $message = "Đã xác nhận đơn hàng và chuyển sang trạng thái Đang xử lý. Đã gửi thông báo cho khách hàng/nông dân.";
+        } elseif ($new_status === 'cancelled') {
+            $message = "Đơn hàng đã được hủy và thông báo đã gửi đến khách hàng/nông dân.";
+        } else {
+            $message = "Cập nhật trạng thái đơn hàng thành công!";
+        }
+    }
 }
 
-$user_id = $_SESSION['user_id'];
-
-// Handle order creation
-if(isset($_POST['create_order'])){
-   $customer_name = $_POST['customer_name'];
-   $customer_phone = $_POST['customer_phone'];
-   $customer_address = $_POST['customer_address'];
-   $products = $_POST['products'];
-   $quantities = $_POST['quantities'];
-   $total_price = $_POST['total_price'];
-   
-   $insert_order = $conn->prepare("INSERT INTO `orders` (business_id, customer_name, customer_phone, customer_address, total_price, payment_status) VALUES (?, ?, ?, ?, ?, 'pending')");
-   $insert_order->execute([$user_id, $customer_name, $customer_phone, $customer_address, $total_price]);
-   $order_id = $conn->lastInsertId();
-   
-   // Insert order items
-   for($i = 0; $i < count($products); $i++){
-      $insert_item = $conn->prepare("INSERT INTO `order_items` (order_id, product_id, quantity) VALUES (?, ?, ?)");
-      $insert_item->execute([$order_id, $products[$i], $quantities[$i]]);
-   }
-   
-   $message[] = 'Đã tạo đơn hàng thành công!';
+// Lấy danh sách đơn hàng (luôn luôn lấy sau khi xử lý POST để đảm bảo dữ liệu mới nhất)
+$status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
+$where_clause = "WHERE business_id = :business_id";
+if ($status_filter !== 'all') {
+    $where_clause .= " AND payment_status = :status";
 }
-
-// Handle order deletion
-if(isset($_POST['delete_order'])){
-   $order_id = $_POST['order_id'];
-   
-   $delete_items = $conn->prepare("DELETE FROM `order_items` WHERE order_id = ?");
-   $delete_items->execute([$order_id]);
-   
-   $delete_order = $conn->prepare("DELETE FROM `orders` WHERE id = ? AND business_id = ?");
-   $delete_order->execute([$order_id, $user_id]);
-   
-   $message[] = 'Đã xóa đơn hàng thành công!';
+$query = "SELECT * FROM orders $where_clause ORDER BY placed_on DESC";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':business_id', $business_id, PDO::PARAM_INT);
+if ($status_filter !== 'all') {
+    $stmt->bindParam(':status', $status_filter, PDO::PARAM_STR);
 }
-
-// Fetch orders
-$select_orders = $conn->prepare("SELECT * FROM `orders` WHERE business_id = ? ORDER BY placed_on DESC");
-$select_orders->execute([$user_id]);
-
-// Fetch products
-$select_products = $conn->prepare("SELECT * FROM `products` WHERE business_id = ?");
-$select_products->execute([$user_id]);
-
+$stmt->execute();
+$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Quản lý đơn hàng</title>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-   <link rel="stylesheet" href="css/style.css">
-   <style>
-      .orders-container {
-         display: grid;
-         grid-template-columns: 1fr 2fr;
-         gap: 2rem;
-         padding: 2rem;
-      }
-      .create-order-form {
-         background: #fff;
-         padding: 2rem;
-         border-radius: .5rem;
-         box-shadow: var(--box-shadow);
-      }
-      .orders-list {
-         background: #fff;
-         padding: 2rem;
-         border-radius: .5rem;
-         box-shadow: var(--box-shadow);
-      }
-      .order-item {
-         padding: 1.5rem;
-         border-bottom: 1px solid var(--light-bg);
-      }
-      .order-header {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         margin-bottom: 1rem;
-      }
-      .order-id {
-         font-weight: bold;
-         color: var(--black);
-      }
-      .order-date {
-         color: var(--light-color);
-      }
-      .order-details {
-         margin-top: 1rem;
-      }
-      .order-details p {
-         margin: .5rem 0;
-      }
-      .product-row {
-         display: flex;
-         align-items: center;
-         gap: 1rem;
-         margin-bottom: 1rem;
-      }
-      .product-select {
-         flex: 2;
-      }
-      .quantity-input {
-         flex: 1;
-      }
-      .add-product-btn {
-         margin-top: 1rem;
-      }
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn Hàng - Thế Giới Nông Sản</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            padding: 20px;
+            background: #fff;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .order-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .order-info {
+            margin-bottom: 8px;
+        }
+        .order-body {
+            padding: 20px;
+        }
+        .order-footer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 14px 12px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            transition: box-shadow 0.2s, background 0.2s;
+        }
+        .product-item:hover {
+            background: #f1f1f1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 18px;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+        .product-item h6 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+            color: #222;
+        }
+        .product-item p {
+            margin-bottom: 0;
+            color: #666;
+            font-size: 0.98rem;
+        }
+        .product-item .text-end {
+            min-width: 100px;
+            text-align: right;
+            font-weight: 600;
+            color: #1a8917;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .status-pending { background-color: #ffeeba; color: #856404; }
+        .status-processing { background-color: #b8daff; color: #004085; }
+        .status-shipped { background-color: #c3e6cb; color: #155724; }
+        .status-completed { background-color: #d4edda; color: #155724; }
+        .status-cancelled { background-color: #f8d7da; color: #721c24; }
+        .filter-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .customer-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .order-item {
+            border: 2px solid #1976d2;         /* Viền xanh dương nổi bật */
+            border-radius: 10px;
+            background: #fff;
+            margin-bottom: 24px;
+            padding: 20px 18px;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .order-item:hover {
+            border-color: #1565c0;
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.18);
+            background: #f5faff;
+        }
+        .order-item .order-header {
+            font-weight: bold;
+            font-size: 1.15em;
+            margin-bottom: 10px;
+            color: #1976d2;
+        }
+        .order-item .order-info {
+            margin-bottom: 8px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
+    
 
-<?php 
-// include 'components/user_header.php'; 
-?>
+    <div class="heading">
+        <h3>Quản Lí Đơn Hàng</h3>
+        <p><a href="business_dashboard.php">Trang quản lý</a> <span> / Quản lí đơn hàng</span></p>
+    </div>
 
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2><i class="fas fa-shopping-cart"></i> Quản lý Đơn Hàng</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="filter-section">
+                    <form method="GET" class="d-flex">
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>Tất cả đơn hàng</option>
+                            <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>Chờ xử lý</option>
+                            <option value="processing" <?php echo $status_filter === 'processing' ? 'selected' : ''; ?>>Đang xử lý</option>
+                            <option value="shipped" <?php echo $status_filter === 'shipped' ? 'selected' : ''; ?>>Đang giao</option>
+                            <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>Hoàn tất</option>
+                            <option value="cancelled" <?php echo $status_filter === 'cancelled' ? 'selected' : ''; ?>>Đã hủy</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<section class="manage-orders">
-   <div class="heading">
-      <h3>Quản lý đơn hàng</h3>
-      <p><a href="business_dashboard.php">Trang quản lý</a> <span> / Quản lý đơn hàng</span></p>
-   </div>
+        <?php if (isset($message)): ?>
+            <div class="alert alert-info"><?php echo $message; ?></div>
+        <?php endif; ?>
 
-   <div class="orders-container">
-      <div class="create-order-form">
-         <h3>Tạo đơn hàng mới</h3>
-         <form action="" method="post" id="orderForm">
-            <div class="inputBox">
-               <span>Tên khách hàng</span>
-               <input type="text" name="customer_name" required class="box">
-            </div>
-            <div class="inputBox">
-               <span>Số điện thoại</span>
-               <input type="text" name="customer_phone" required class="box">
-            </div>
-            <div class="inputBox">
-               <span>Địa chỉ</span>
-               <textarea name="customer_address" required class="box" cols="30" rows="3"></textarea>
-            </div>
-            
-            <div id="productsContainer">
-               <div class="product-row">
-                  <div class="product-select">
-                     <span>Sản phẩm</span>
-                     <select name="products[]" class="box" required>
-                        <option value="">Chọn sản phẩm</option>
-                        <?php
-                        while($fetch_product = $select_products->fetch(PDO::FETCH_ASSOC)){
-                        ?>
-                        <option value="<?= $fetch_product['id']; ?>" data-price="<?= $fetch_product['price']; ?>">
-                           <?= $fetch_product['name']; ?> - <?= number_format($fetch_product['price']); ?> VNĐ
-                        </option>
-                        <?php
-                        }
-                        ?>
-                     </select>
-                  </div>
-                  <div class="quantity-input">
-                     <span>Số lượng</span>
-                     <input type="number" name="quantities[]" min="1" value="1" class="box" required>
-                  </div>
-               </div>
-            </div>
-            
-            <button type="button" class="btn add-product-btn" onclick="addProductRow()">
-               <i class="fas fa-plus"></i> Thêm sản phẩm
-            </button>
-            
-            <div class="inputBox">
-               <span>Tổng tiền</span>
-               <input type="text" name="total_price" class="box" readonly>
-            </div>
-            
-            <input type="submit" value="Tạo đơn hàng" name="create_order" class="btn">
-         </form>
-      </div>
+        <?php if (count($orders) > 0): ?>
+            <?php foreach ($orders as $order): ?>
+                <div class="order-item">
+                    <div class="order-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-shopping-bag"></i> Đơn hàng #<?php echo $order['id']; ?>
+                                </h5>
+                                <small class="text-muted">
+                                    <i class="far fa-clock"></i> <?php echo date('d/m/Y', strtotime($order['placed_on'])); ?>
+                                </small>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <span class="status-badge status-<?php echo $order['payment_status']; ?>">
+                                    <?php
+                                    echo $order['payment_status'] === 'pending' ? 'Chờ xử lý' :
+                                        ($order['payment_status'] === 'processing' ? 'Đang xử lý' :
+                                        ($order['payment_status'] === 'shipped' ? 'Đang giao' :
+                                        ($order['payment_status'] === 'completed' ? 'Hoàn tất' : 'Đã hủy')));
+                                    ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
-      <div class="orders-list">
-         <h3>Danh sách đơn hàng</h3>
-         <?php
-         if($select_orders->rowCount() > 0){
-            while($fetch_order = $select_orders->fetch(PDO::FETCH_ASSOC)){
-         ?>
-         <div class="order-item">
-            <div class="order-header">
-               <div class="order-id">
-                  <i class="fas fa-shopping-cart"></i>
-                  Đơn hàng #<?= str_pad($fetch_order['id'], 8, '0', STR_PAD_LEFT); ?>
-               </div>
-               <div class="order-date">
-                  <?= date('d/m/Y H:i', strtotime($fetch_order['placed_on'])); ?>
-               </div>
-            </div>
-            <div class="order-details">
-               <p><strong>Khách hàng:</strong> <?= $fetch_order['customer_name']; ?></p>
-               <p><strong>Điện thoại:</strong> <?= $fetch_order['customer_phone']; ?></p>
-               <p><strong>Địa chỉ:</strong> <?= $fetch_order['customer_address']; ?></p>
-               <p><strong>Tổng tiền:</strong> <?= number_format($fetch_order['total_price']); ?> VNĐ</p>
-               <p><strong>Trạng thái:</strong> 
-                  <?php
-                  switch($fetch_order['payment_status']){
-                     case 'pending':
-                        echo '<span style="color: #ffc107;">Đang chờ xử lý</span>';
-                        break;
-                     case 'processing':
-                        echo '<span style="color: #17a2b8;">Đang xử lý</span>';
-                        break;
-                     case 'completed':
-                        echo '<span style="color: #28a745;">Đã hoàn thành</span>';
-                        break;
-                     case 'cancelled':
-                        echo '<span style="color: #dc3545;">Đã hủy</span>';
-                        break;
-                  }
-                  ?>
-               </p>
-            </div>
-            <div class="order-actions">
-               <a href="view_order.php?id=<?= $fetch_order['id']; ?>" class="btn">
-                  <i class="fas fa-eye"></i> Xem chi tiết
-               </a>
-               <form action="" method="post" style="display: inline;">
-                  <input type="hidden" name="order_id" value="<?= $fetch_order['id']; ?>">
-                  <button type="submit" name="delete_order" class="btn" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">
-                     <i class="fas fa-trash"></i> Xóa
-                  </button>
-               </form>
-            </div>
-         </div>
-         <?php
-            }
-         }else{
-            echo '<p class="empty">Chưa có đơn hàng nào!</p>';
-         }
-         ?>
-      </div>
-   </div>
-</section>
+                    <div class="order-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="customer-info">
+                                    <h6><i class="fas fa-user"></i> Thông tin khách hàng</h6>
+                                    <p class="mb-1"><strong>Tên:</strong> <?php echo htmlspecialchars($order['name']); ?></p>
+                                    <p class="mb-1"><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($order['number']); ?></p>
+                                    <p class="mb-1"><strong>Email:</strong> <?php echo htmlspecialchars($order['email']); ?></p>
+                                    <p class="mb-1"><strong>Địa chỉ:</strong> <?php echo htmlspecialchars($order['address']); ?></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-info">
+                                    <h6><i class="fas fa-info-circle"></i> Thông tin đơn hàng</h6>
+                                    <p class="mb-1"><strong>Phương thức thanh toán:</strong> <?php echo $order['method']; ?></p>
+                                    <p class="mb-1"><strong>Tổng sản phẩm:</strong> <?php echo htmlspecialchars($order['total_products']); ?></p>
+                                    <p class="mb-1"><strong>Tổng tiền:</strong> <?php echo number_format($order['total_price']); ?> VNĐ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<?php include 'components/footer.php'; ?>
-<script>
-function addProductRow() {
-   const container = document.getElementById('productsContainer');
-   const newRow = container.firstElementChild.cloneNode(true);
-   newRow.querySelector('select').value = '';
-   newRow.querySelector('input').value = '1';
-   container.appendChild(newRow);
-   updateTotal();
-}
+                    <div class="order-footer">
+                        <form method="POST" class="d-inline">
+                            <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
+                            <?php if ($order['payment_status'] === 'pending'): ?>
+                                <button type="submit" name="new_status" value="processing" class="btn btn-success btn-sm">Xác nhận</button>
+                                <button type="submit" name="new_status" value="cancelled" class="btn btn-danger btn-sm">Hủy</button>
+                            <?php elseif (in_array($order['payment_status'], ['processing', 'shipped'])): ?>
+                                <select name="new_status" onchange="this.form.submit()" class="form-select d-inline w-auto">
+                                    <option value="">Cập nhật trạng thái</option>
+                                    <?php if ($order['payment_status'] === 'processing'): ?>
+                                        <option value="shipped">Đang giao</option>
+                                    <?php endif; ?>
+                                    <option value="completed">Hoàn tất</option>
+                                    <option value="cancelled">Hủy</option>
+                                </select>
+                            <?php endif; ?>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Không có đơn hàng nào.
+            </div>
+        <?php endif; ?>
+    </div>
 
-function updateTotal() {
-   const form = document.getElementById('orderForm');
-   const products = form.querySelectorAll('select[name="products[]"]');
-   const quantities = form.querySelectorAll('input[name="quantities[]"]');
-   let total = 0;
    
-   products.forEach((product, index) => {
-      if(product.value) {
-         const price = product.options[product.selectedIndex].dataset.price;
-         const quantity = quantities[index].value;
-         total += price * quantity;
-      }
-   });
-   
-   form.querySelector('input[name="total_price"]').value = total.toLocaleString('vi-VN') + ' VNĐ';
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-   const form = document.getElementById('orderForm');
-   form.querySelectorAll('select[name="products[]"], input[name="quantities[]"]').forEach(element => {
-      element.addEventListener('change', updateTotal);
-   });
-});
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

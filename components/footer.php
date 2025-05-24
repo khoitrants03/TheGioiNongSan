@@ -26,6 +26,6 @@
 
    </section>
 
-   <div class="credit">&copy; copyright @ <?= date('Y'); ?> by <span>Khoi & Kiet</span> | all rights reserved!</div>
+   <section class="credit">&copy; copyright @ <?= date('Y'); ?> by <span>Khoi & Kiet</span> | all rights reserved!</section>
 
 </footer>

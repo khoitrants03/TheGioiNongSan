@@ -33,6 +33,24 @@ if ($user_id) {
 </head>
 
 <body>
+<?php
+    
+   
+    if (isset($_SESSION['phanquyen'])) {
+        if ($_SESSION['phanquyen'] === 'nongdan') {
+            require("components/user_header_nongdan.php");
+        }
+        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+            require("components/user_header_doanhnghiep.php");
+        }
+                if ($_SESSION['phanquyen'] === 'khachhang') {
+            require("components/user_header_khachhang.php");
+        }
+    } else {
+        include("components/user_header.php");
+    }
+
+   ?>
     <!-- Thông báo -->
     <?php
     if (isset($message)) {
@@ -61,10 +79,12 @@ if ($user_id) {
         <section class="flex">
             <nav class="navbar">
                 <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-                <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
-                <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
-                <a href="taomaqr_sanpham.php">Quản lí mã qr</a>
-                <a href="track_order.php">Quản lí đơn hàng</a>
+                <a href="#">Về chúng tôi</a>
+                <a href="scan_qr.php">Quét mã QR</a>
+                <a href="#">Rau củ sạch</a>
+                <a href="#">Bún miến</a>
+                <a href="#">Gạo các lọai</a>
+                <a href="#">Liên hệ</a>
                 <!-- <a href="#">Thông tin đánh giá sản phẩm</a> -->
             </nav>
             <div class="icons">

@@ -40,16 +40,18 @@ include 'components/add_cart.php';
     
    
     if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
-            require("components/user_header_doanhnghiep.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
-
+      if ($_SESSION['phanquyen'] === 'nongdan') {
+          require("components/user_header_nongdan.php");
+      }
+      if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+          require("components/user_header_doanhnghiep.php");
+      }
+              if ($_SESSION['phanquyen'] === 'khachhang') {
+          require("components/user_header_khachhang.php");
+      }
+  } else {
+      include("components/user_header.php");
+  }
    ?>
 
    <section class="hero">

@@ -14,11 +14,11 @@ if (isset($_GET['logout'])) {
 // Get user info if logged in
 $user_id = '';
 $user_name = '';
-if(isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
     $select_profile->execute([$user_id]);
-    if($select_profile->rowCount() > 0){
+    if ($select_profile->rowCount() > 0) {
         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
         $user_name = $fetch_profile['name'];
     }
@@ -96,8 +96,9 @@ if ($user_id != '') {
                 </a>
                 <a href="search_page.php" class="fas fa-search"></a>
                 <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $cart_count; ?>)</span></a>
-                <?php if(isset($_SESSION['user_id'])): ?>
-                    <a href="?logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="fas fa-sign-out-alt"></a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="?logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');"
+                        class="fas fa-sign-out-alt"></a>
                 <?php endif; ?>
                 <div id="menu-btn" class="fas fa-bars"></div>
             </div>
@@ -105,7 +106,7 @@ if ($user_id != '') {
             <div class="profile">
                 <div class="profile-header">
                     <div class="profile-picture">
-                        <?php if(!empty($fetch_profile['image'])): ?>
+                        <?php if (!empty($fetch_profile['image'])): ?>
                             <img src="../uploaded_img/<?= $fetch_profile['image']; ?>" alt="Profile Picture">
                         <?php else: ?>
                             <img src="../imgs/default-avatar.png" alt="Default Profile Picture">
@@ -117,25 +118,25 @@ if ($user_id != '') {
                     </div>
                 </div>
                 <div class="profile-links">
-<<<<<<< HEAD
+
+                    <!-- <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                        <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                        <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    </div> -->
+                    <a href="../profile.php" class="btn">Thông tin cá nhân</a>
+                    <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
                     <div class="flex">
                         <a href="profile.php" class="btn">Thông tin cá nhân</a>
                         <a href="orders.php" class="btn">Đơn hàng của tôi</a>
                         <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
                     </div>
-=======
-                    <a href="../profile.php" class="btn">Thông tin cá nhân</a>
-                <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
-                <div class="flex">
-                    <a href="profile.php" class="btn">Thông tin cá nhân</a>
-                    <a href="orders.php" class="btn">Đơn hàng của tôi</a>
-                    <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    <div class="flex-btn">
+                        <a href="components/user_logout.php"
+                            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng
+                            xuất</a>
+                    </div>
                 </div>
-                <div class="flex-btn">
-                    <a href="components/user_logout.php" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng xuất</a>
->>>>>>> 8c59b9a2bb2d6bdfbff6e180e4787ea4453da064
-                </div>
-            </div>
         </section>
     </header>
 

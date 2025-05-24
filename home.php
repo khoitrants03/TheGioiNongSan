@@ -46,6 +46,9 @@ include 'components/add_cart.php';
         if ($_SESSION['phanquyen'] === 'doanhnghiep') {
             require("components/user_header_doanhnghiep.php");
         }
+                if ($_SESSION['phanquyen'] === 'khachhang') {
+            require("components/user_header_khachhang.php");
+        }
     } else {
         include("components/user_header.php");
     }

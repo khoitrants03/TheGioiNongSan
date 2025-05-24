@@ -60,6 +60,15 @@ if ($user_id) {
 
         <section class="flex">
             <nav class="navbar">
+                <div class="dropdown">
+                    <a href="../product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
+                    <div class="dropdown-content">
+                        <a href="#">Rau củ sạch</a>
+                        <a href="#">Bún miến</a>
+                        <a href="#">Gạo các lọai</a>
+                        <a href="#">Nông sản sạch</a>
+                    </div>
+                </div>
                 <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
                 <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
                 <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>

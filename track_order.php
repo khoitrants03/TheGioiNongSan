@@ -194,7 +194,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       <div class="order-list">
          <div class="no-selection" id="noSelection">
-             <h3>Chọn đơn hàng để cập nhật</h3>
+            <h3>Chọn đơn hàng để cập nhật</h3>
             <p>Vui lòng nhấp vào một dòng trong bảng phía trên để hiển thị form cập nhật trạng thái</p>
          </div>
 
@@ -405,3 +405,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
          });
       });
    </script>
+       <?php include 'components/footer_admin.php'; ?>
+
+    <script src="js/script.js"></script>
+</body>

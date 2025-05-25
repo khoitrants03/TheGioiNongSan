@@ -79,6 +79,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
       <div class="heading">
          <h3>Trang quản lý doanh nghiệp</h3>
          <p><a href="home.php">Trang chủ</a> <span> / Quản lý doanh nghiệp</span></p>
+         <a href="business_logout.php" class="delete-btn" onclick="return confirm('Đăng xuất?');">Đăng xuất</a>
       </div>
 
       <div class="dashboard-container">
@@ -110,6 +111,8 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             <h3>Quản lí sản phẩm </h3>
             <p>Cập nhật danh sách sản phẩm </p>
          </a>
+
+         
       </div>
    </section>
 

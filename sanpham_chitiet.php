@@ -104,8 +104,7 @@ if (isset($_GET['id'])) {
                                 <th>Số lượng</th>
                                 <th>Nông dân</th>
                                 <th>Danh mục</th>
-                                <th>QR Code</th>
-                                <th>Ngày tạo</th>
+                                 <th>Ngày tạo</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -118,8 +117,7 @@ if (isset($_GET['id'])) {
                                 <td><input type="number" name="so_luong_ton" value="<?= htmlspecialchars($row['so_luong_ton']) ?>" required></td>
                                 <td><?= htmlspecialchars($row['id_nongdan']) ?></td>
                                 <td><?= htmlspecialchars($row['id_danhmuc']) ?></td>
-                                <td><?= htmlspecialchars($row['id_qrcode']) ?></td>
-                                <td><?= htmlspecialchars($row['ngay_tao']) ?></td>
+                                 <td><?= htmlspecialchars($row['ngay_tao']) ?></td>
                                 <td>
                                     <button type="submit" class="btn btn-danger mb-2">Lưu thay đổi</button>
                                     <button type="submit" name="delete" class="btn btn-info"

@@ -88,8 +88,8 @@ if ($user_id != '') {
                 <a href="#" class="dropdown-toggle">Bún miến</a>
                 <a href="scan_qr.php">Quét mã QR</a>
                 <a href="../contact.php">Liên hệ</a>
-                <a href="orders.php" class="btn">Đơn hàng của tôi</a>
-                <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                <a href="orders.php" >Đơn hàng của tôi</a>
+                <a href="wishlist.php" >Danh sách yêu thích</a>
             </nav>
 
             <div class="icons">

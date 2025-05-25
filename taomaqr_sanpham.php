@@ -108,20 +108,23 @@ if (isset($_GET['id'])) {
                         <label for="txt_tensanpham">Tên sản phẩm</label>
                         <select id="txt_tensanpham" name="txt_tensanpham" required>
                             <?php
-                            try {
-                                $query = $conn->prepare("SELECT id_sanpham, ten_sanpham FROM sanpham");
-                                $query->execute();
+                           try {
+    $query = $conn->prepare("SELECT sp.id_sanpham, sp.ten_sanpham 
+                             FROM sanpham sp 
+                             JOIN nguoidung nd ON nd.id_nguoidung = sp.id_nongdan
+                             WHERE nd.id_nguoidung = ?");
+    $query->execute([$id_nongdan]);
 
-                                if ($query->rowCount() > 0) {
-                                    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                                        echo "<option value='" . htmlspecialchars($row['id_sanpham']) . "'>" . htmlspecialchars($row['ten_sanpham']) . "</option>";
-                                    }
-                                } else {
-                                    echo "<option value=''>Không có sản phẩm</option>";
-                                }
-                            } catch (PDOException $e) {
-                                echo "<option value=''>Lỗi: " . $e->getMessage() . "</option>";
-                            }
+    if ($query->rowCount() > 0) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            echo "<option value='" . htmlspecialchars($row['id_sanpham']) . "'>" . htmlspecialchars($row['ten_sanpham']) . "</option>";
+        }
+    } else {
+        echo "<option value=''>Không có sản phẩm</option>";
+    }
+} catch (PDOException $e) {
+    echo "<option value=''>Lỗi: " . htmlspecialchars($e->getMessage()) . "</option>";
+}
                             ?>
                         </select>
                     </div>
@@ -213,53 +216,53 @@ if (isset($_GET['id'])) {
         ?>
     </section>
     <?php
- 
-// 1. Xử lý xóa mã QR nếu có tham số delete_qr
-if (isset($_GET['delete_qr'])) {
-    $id_to_delete = $_GET['delete_qr'];
 
-    try {
-        // Lấy đường dẫn ảnh trước khi xóa
-        $stmt = $conn->prepare("SELECT duong_dan FROM qrcode WHERE id_qrcode = ?");
-        $stmt->execute([$id_to_delete]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    // 1. Xử lý xóa mã QR nếu có tham số delete_qr
+    if (isset($_GET['delete_qr'])) {
+        $id_to_delete = $_GET['delete_qr'];
 
-        // Xóa bản ghi
-        $delete = $conn->prepare("DELETE FROM qrcode WHERE id_qrcode = ?");
-        $delete->execute([$id_to_delete]);
+        try {
+            // Lấy đường dẫn ảnh trước khi xóa
+            $stmt = $conn->prepare("SELECT duong_dan FROM qrcode WHERE id_qrcode = ?");
+            $stmt->execute([$id_to_delete]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Xóa ảnh QR khỏi server nếu tồn tại
-        if ($row && file_exists($row['duong_dan'])) {
-            unlink($row['duong_dan']);
+            // Xóa bản ghi
+            $delete = $conn->prepare("DELETE FROM qrcode WHERE id_qrcode = ?");
+            $delete->execute([$id_to_delete]);
+
+            // Xóa ảnh QR khỏi server nếu tồn tại
+            if ($row && file_exists($row['duong_dan'])) {
+                unlink($row['duong_dan']);
+            }
+
+            echo "<script>alert('Đã xóa mã QR thành công'); location.href='?';</script>";
+            exit;
+        } catch (PDOException $e) {
+            echo "<script>alert('Lỗi khi xóa: " . $e->getMessage() . "');</script>";
         }
-
-        echo "<script>alert('Đã xóa mã QR thành công'); location.href='?';</script>";
-        exit;
-    } catch (PDOException $e) {
-        echo "<script>alert('Lỗi khi xóa: " . $e->getMessage() . "');</script>";
     }
-}
-?>
+    ?>
 
-<section class="products_1">
-    <div class="form-title">SẢN PHẨM GẦN ĐÂY CỦA BẠN</div>
+    <section class="products_1">
+        <div class="form-title">SẢN PHẨM GẦN ĐÂY CỦA BẠN</div>
 
-    <table class="product-table" border="1" cellpadding="8" cellspacing="0"
-        style="width:100%; border-collapse: collapse;">
-        <thead>
-            <tr>
-                <th>ID_QR</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Ngày tạo QR</th>
-                <th>Hành động</th>
-                <th>Xóa QR</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $stmt = $conn->prepare("
+        <table class="product-table" border="1" cellpadding="8" cellspacing="0"
+            style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>ID_QR</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Ngày tạo QR</th>
+                    <th>Hành động</th>
+                    <th>Xóa QR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $stmt = $conn->prepare("
                 SELECT sp.ten_sanpham, sp.mo_ta, sp.gia, sp.so_luong_ton, nd.ho_ten, nd.so_dien_thoai, 
                        tt.vi_tri_trang_trai, tt.phuong_phap_trong_trot, tt.ngay_thu_hoach, qr.id_qrcode, qr.ngay_tao AS qr_ngay_tao
                 FROM sanpham sp
@@ -270,39 +273,39 @@ if (isset($_GET['delete_qr'])) {
                 ORDER BY qr.ngay_tao DESC
                 LIMIT 10
             ");
-            $stmt->execute([$id_nongdan]);
+                $stmt->execute([$id_nongdan]);
 
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $id_qr = $row['id_qrcode'] ?? 'Chưa có';
-                $link_qr = ($id_qr !== 'Chưa có') ? "?id=$id_qr" : '#';
-                echo "<tr>";
-                echo "<td><a href='{$link_qr}'>" . htmlspecialchars($id_qr) . "</a></td>";
-                echo "<td>" . htmlspecialchars($row['ten_sanpham']) . "</td>";
-                echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
-                echo "<td>" . intval($row['so_luong_ton']) . "</td>";
-                echo "<td>" . ($row['qr_ngay_tao'] ?? 'Chưa tạo') . "</td>";
-                echo "<td>";
-                if ($id_qr === 'Chưa có') {
-                    echo "Chưa có mã QR";
-                } else {
-                    echo "<a href='{$link_qr}'>Xem/Tạo mã QR</a>";
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $id_qr = $row['id_qrcode'] ?? 'Chưa có';
+                    $link_qr = ($id_qr !== 'Chưa có') ? "?id=$id_qr" : '#';
+                    echo "<tr>";
+                    echo "<td><a href='{$link_qr}'>" . htmlspecialchars($id_qr) . "</a></td>";
+                    echo "<td>" . htmlspecialchars($row['ten_sanpham']) . "</td>";
+                    echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
+                    echo "<td>" . intval($row['so_luong_ton']) . "</td>";
+                    echo "<td>" . ($row['qr_ngay_tao'] ?? 'Chưa tạo') . "</td>";
+                    echo "<td>";
+                    if ($id_qr === 'Chưa có') {
+                        echo "Chưa có mã QR";
+                    } else {
+                        echo "<a href='{$link_qr}'>Xem/Tạo mã QR</a>";
+                    }
+                    echo "</td>";
+                    echo "<td>";
+                    if ($id_qr !== 'Chưa có') {
+                        echo "<a href='?delete_qr={$id_qr}' onclick=\"return confirm('Bạn có chắc muốn xóa mã QR này?');\">Xóa</a>";
+                    } else {
+                        echo "-";
+                    }
+                    echo "</td>";
+                    echo "</tr>";
                 }
-                echo "</td>";
-                echo "<td>";
-                if ($id_qr !== 'Chưa có') {
-                    echo "<a href='?delete_qr={$id_qr}' onclick=\"return confirm('Bạn có chắc muốn xóa mã QR này?');\">Xóa</a>";
-                } else {
-                    echo "-";
-                }
-                echo "</td>";
-                echo "</tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
 
-    <?php if (!empty($qrFile)): ?>
-        <div class="qr-box" style="
+        <?php if (!empty($qrFile)): ?>
+            <div class="qr-box" style="
                     margin-top: 20px;
                     padding: 15px;
                     border: 1px solid #ccc;
@@ -311,11 +314,11 @@ if (isset($_GET['delete_qr'])) {
                     border-radius: 8px;
                     margin-left: 50%;
                         ">
-            <h3 style="margin-bottom: 10px;">QR Code Sản phẩm</h3>
-            <div class="result" style="text-align: center;">
-                <img src="<?= htmlspecialchars($qrFile) ?>" alt="QR Code"
-                    style="width: 300px; height: 300px; margin-bottom: 10px;" />
-                <pre style="
+                <h3 style="margin-bottom: 10px;">QR Code Sản phẩm</h3>
+                <div class="result" style="text-align: center;">
+                    <img src="<?= htmlspecialchars($qrFile) ?>" alt="QR Code"
+                        style="width: 300px; height: 300px; margin-bottom: 10px;" />
+                    <pre style="
         white-space: pre-wrap;
         word-wrap: break-word;
         text-align: left;
@@ -326,14 +329,14 @@ if (isset($_GET['delete_qr'])) {
         overflow-x: auto;
         max-height: 300px;
     "><?= htmlspecialchars($qrData) ?></pre>
-                <a href="<?= htmlspecialchars($qrFile) ?>" download
-                    style="display: inline-block; margin-top: 10px; color: #007bff;">Tải mã QR</a>
+                    <a href="<?= htmlspecialchars($qrFile) ?>" download
+                        style="display: inline-block; margin-top: 10px; color: #007bff;">Tải mã QR</a>
+                </div>
             </div>
-        </div>
-    <?php elseif (!empty($qrData)): ?>
-        <p style="color:red;"><?= htmlspecialchars($qrData) ?></p>
-    <?php endif; ?>
-</section>
+        <?php elseif (!empty($qrData)): ?>
+            <p style="color:red;"><?= htmlspecialchars($qrData) ?></p>
+        <?php endif; ?>
+    </section>
 
 
     <?php include 'components/footer_admin.php'; ?>

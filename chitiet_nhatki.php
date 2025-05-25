@@ -77,22 +77,11 @@ if ($product_id) {
 </head>
 
 <body>
-    <?php
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
-            require("components/user_header_doanhnghiep.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
-    ?>
+   
 
     <div class="heading">
         <h3>Quản Lí Nhật Kí</h3>
-        <p><a href="home.php">Trang chủ</a> <span><a href="#"> /Quản lí </a></span></p>
+        <p><a href="business_dashboard.php">Trang chủ</a> <span><a href="danhsachnhatki_doanhnghiep.php"> /Quản lí </a></span></p>
     </div>
 
     <div class="container">

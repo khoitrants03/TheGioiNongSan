@@ -40,13 +40,19 @@ session_start();
     <!-- header section starts  -->
     <?php
 
-    // if (isset($_SESSION['phanquyen'])) {
-    //     if ($_SESSION['phanquyen'] === 'nongdan') {
-    //         require("components/user_header_nongdan.php");
-    //     }
-    // } else {}
-        // include("components/user_header_doanhnghiep.php");
-    
+    if (isset($_SESSION['phanquyen'])) {
+        if ($_SESSION['phanquyen'] === 'nongdan') {
+            require("components/user_header_nongdan.php");
+        }
+        if ($_SESSION['phanquyen'] === 'khachhang') {
+            require("components/user_header_khachhang.php");
+        }
+        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+            require("components/user_header_doanhnghiep.php");
+        }
+    } else {
+        include("components/user_header_doanhnghiep.php");
+    }
 
     ?> <!-- header section ends -->
 

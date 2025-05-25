@@ -12,15 +12,15 @@ if (isset($_GET['logout'])) {
 }
 
 // Get user info if logged in
-$user_id = '';
-$user_name = '';
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+$user_name = null;
+if ($user_id) {
+    $select_profile = $conn->prepare("SELECT * FROM `nguoidung` WHERE id_nguoidung = ?");
     $select_profile->execute([$user_id]);
     if ($select_profile->rowCount() > 0) {
         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-        $user_name = $fetch_profile['name'];
+        $user_name = $fetch_profile['ho_ten'];
     }
 }
 

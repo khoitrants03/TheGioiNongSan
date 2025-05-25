@@ -128,8 +128,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
    <?php endif; ?>
 
    <section class="products_1">
-      <div class="form-title">DANH SÁCH SẢN PHẨM ĐÃ ĐẶT</div>
-      <div class="table-container">
+      <div class="form-title" style="    margin-left: 42%; margin-top: 1rem;font-size: 3rem;}">
+         DANH SÁCH SẢN PHẨM ĐÃ ĐẶT
+      </div>
+      <div class="table-container"style="margin-top: 2rem;">
          <table class="product-table">
             <thead>
                <tr>
@@ -183,7 +185,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
    </section>
 
    <div class="container">
-      <h1>Cập nhật trạng thái đơn hàng</h1>
+      <h1>Theo dõi trạng thái đơn hàng</h1>
       <div class="order-filter">
          <input type="text" id="searchInput"
             placeholder="Tìm kiếm theo mã đơn hàng, tên khách hàng hoặc trạng thái..." />
@@ -229,18 +231,14 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                            nhận</option>
                         <option value="Đã xác nhận" <?= $order['trang_thai'] === 'Đã xác nhận' ? 'selected' : '' ?>>Đã xác
                            nhận</option>
-                        <!-- <option value="Đang giao hàng" <?= $order['trang_thai'] === 'Đang giao hàng' ? 'selected' : '' ?>>Đang
-                           giao hàng</option>
-                        <option value="Đã giao hàng" <?= $order['trang_thai'] === 'Đã giao hàng' ? 'selected' : '' ?>>Đã giao
-                           hàng</option> -->
                         <option value="Đã hủy" <?= $order['trang_thai'] === 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>
                      </select>
                   </p>
 
                   <div class="button-group">
-                     <button type="submit" class="btn-update">
+                     <!-- <button type="submit" class="btn-update">
                         <i class="fas fa-save"></i> Cập nhật trạng thái
-                     </button>
+                     </button> -->
                      <button type="button" class="btn-close" onclick="hideOrderForm()">
                         <i class="fas fa-times"></i> Đóng
                      </button>

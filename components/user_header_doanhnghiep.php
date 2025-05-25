@@ -7,8 +7,7 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $user_name = null;
 if ($user_id) {
@@ -88,7 +87,7 @@ if ($user_id) {
                     </div>
                 <?php else: ?>
                     <p class="name">Vui lòng đăng nhập!</p>
-                    <a href="login.php" class="btn">Đăng nhập</a>
+                    <a href="business_login.php" class="btn">Đăng nhập</a>
                 <?php endif; ?>
             </div>
         </section>

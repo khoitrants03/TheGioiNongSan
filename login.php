@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
          <input type="password" name="pass" required placeholder="Nhập mật khẩu của bạn" class="box" maxlength="50" oninput="this.value = this.value.replace(/\s/g, '')">
          <input type="submit" value="Đăng nhập" name="submit" class="btn">
          <p>Bạn chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
-         <!-- <p>Bạn là quản trị viên? <a href="admin/admin_login.php">Admin</a></p> -->
+         <p>Bạn là quản trị viên? <a href="business_dashboard.php">Admin</a></p>
 
       </form>
 

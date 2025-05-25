@@ -10,12 +10,12 @@ session_start();
 //     $user_id = '';
 // }
 ;
-$id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+// $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-if (!$id_nongdan) {
-    echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
-    exit();
-}
+// if (!$id_nongdan) {
+//     echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
+//     exit();
+// }
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ if (!$id_nongdan) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nông dân</title>
+    <title>Quản lí nhật kí sản xuất</title>
     <link rel="shortcut icon" href="./imgs/hospital-solid.svg" type="image/x-icon">
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -36,25 +36,11 @@ if (!$id_nongdan) {
 
 <body>
 
-    <!-- header section starts  -->
-    <?php
-
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
-            require("components/user_header_doanhnghiep.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
-
-    ?> <!-- header section ends -->
+    <!-- header section ends -->
 
     <div class="heading">
         <h3>Quản Lí Nhật Kí</h3>
-        <p><a href="home.php">Trang chủ</a> <span> /Quản lí </span> </p>
+        <p><a href="business_dashboard.php">Trang chủ</a> <span> /Quản lí </span> </p>
     </div>
 
     <!-- menu section starts  -->
@@ -193,7 +179,7 @@ if (!$id_nongdan) {
 
 
     </section>
-    <div class="form-box">
+    <section class="form-box">
         <div class="form-title">DANH SÁCH SẢN PHẨM MỚI TẠO</div>
 
         <table class="product-table">
@@ -225,7 +211,7 @@ if (!$id_nongdan) {
             </tbody>
         </table>
 
-    </div>
+    </section>
 
 
     <!-- menu section ends -->

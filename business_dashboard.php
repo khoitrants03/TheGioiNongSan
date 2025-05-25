@@ -70,7 +70,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 <body>
 
    <?php
-   // include 'components/user_header.php'; 
+   include 'components/user_header_doanhnghiep.php'; 
    ?>
 
 
@@ -100,11 +100,11 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             <p>Quản lý đơn hàng của khách hàng</p>
          </a>
 
-         <!-- <a href="distribution_status.php" class="dashboard-card">
-            <i class="fas fa-truck"></i>
-            <h3>Cập nhật trạng thái phân phối</h3>
-            <p>Gửi thông báo và cập nhật quá trình giao hàng</p>
-         </a> -->
+         <a href="quanlinhatkisanxuat_doanhnghiep.php" class="dashboard-card">
+<i class="fas fa-book"></i>
+            <h3>Quản lí nhật kí sản xuất</h3>
+            <p>Quản lí thời gian trồng trọt </p>
+         </a>
          <a href="capnhatthongtinsp.php" class="dashboard-card">
             <i class="fas fa-seedling"></i>
             <h3>Quản lí sản phẩm </h3>

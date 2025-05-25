@@ -97,7 +97,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
          <a href="manage_orders.php" class="dashboard-card">
             <i class="fas fa-shopping-cart"></i>
             <h3>Quản lý đơn hàng</h3>
-            <p>Tạo, chỉnh sửa và quản lý đơn hàng</p>
+            <p>Quản lý đơn hàng của khách hàng</p>
          </a>
 
          <!-- <a href="distribution_status.php" class="dashboard-card">
@@ -108,7 +108,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
          <a href="capnhatthongtinsp.php" class="dashboard-card">
             <i class="fas fa-seedling"></i>
             <h3>Quản lí sản phẩm </h3>
-            <p>Cập nhật danh sách sản ohaarm của nông dân</p>
+            <p>Cập nhật danh sách sản phẩm </p>
          </a>
       </div>
    </section>

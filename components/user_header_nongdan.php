@@ -61,7 +61,7 @@ if ($user_id) {
         <section class="flex">
             <nav class="navbar">
                 <div class="dropdown">
-                    <a href="../product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
+                    <!-- <a href="../product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a> -->
                     <div class="dropdown-content">
                         <a href="#">Rau củ sạch</a>
                         <a href="#">Bún miến</a>
@@ -69,11 +69,12 @@ if ($user_id) {
                         <a href="#">Nông sản sạch</a>
                     </div>
                 </div>
-                <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
+                <!-- <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a> -->
                 <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
                 <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
                 <a href="taomaqr_sanpham.php">Quản lí mã qr</a>
                 <a href="track_order.php">Quản lí đơn hàng</a>
+                <a href="doitac.php">Đối tác</a>
                 <!-- <a href="#">Thông tin đánh giá sản phẩm</a> -->
             </nav>
             <div class="icons">

@@ -120,7 +120,7 @@ $select_orders->execute([$user_id]);
 </head>
 <body>
 
-<?php include 'components/user_header.php'; ?>
+
 
 <section class="distribution-status">
    <div class="heading">

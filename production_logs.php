@@ -77,7 +77,7 @@ $select_logs->execute([$user_id]);
 </head>
 <body>
 
-<?php include 'components/user_header.php'; ?>
+
 
 <section class="production-logs">
    <div class="heading">

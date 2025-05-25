@@ -46,12 +46,6 @@ if ($user_id != '') {
 </head>
 
 <body>
-<?php
-    
-   
-    include("components/user_header_khachhang.php");
-
-   ?>
     <!-- Thông báo -->
     <?php
     if (isset($message)) {
@@ -93,7 +87,8 @@ if ($user_id != '') {
                 <a href="#" class="dropdown-toggle">Rau củ sạch</a>
                 <a href="#" class="dropdown-toggle">Bún miến</a>
                 <a href="scan_qr.php">Quét mã QR</a>
-                 <a href="../contact.php">Liên hệ</a>
+                <a href="../contact.php">Liên hệ</a>
+                
             </nav>
 
             <div class="icons">
@@ -110,7 +105,7 @@ if ($user_id != '') {
             </div>
 
             <div class="profile">
-                <div class="profile-header">
+                <!-- <div class="profile-header">
                     <div class="profile-picture">
                         <?php if (!empty($fetch_profile['image'])): ?>
                             <img src="../uploaded_img/<?= $fetch_profile['image']; ?>" alt="Profile Picture">
@@ -122,14 +117,25 @@ if ($user_id != '') {
                         <h3><?= $fetch_profile['ho_ten']; ?></h3>
                         <p><?= $fetch_profile['email']; ?></p>
                     </div>
-                </div>
-                <div class="profile-links">
+                </div> -->
+                <?php if ($user_name): ?>
+                    <p class="name"><?= htmlspecialchars($user_name); ?></p>
+                    <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin</a>
+                        <a href="?logout=true" onclick="return confirm('Bạn có chắc muốn đăng xuất?');"
+                            class="delete-btn">Đăng xuất</a>
+                    </div>
+                <?php else: ?>
+                    <p class="name">Vui lòng đăng nhập!</p>
+                    <a href="login.php" class="btn">Đăng nhập</a>
+                <?php endif; ?>
+                <!-- <div class="profile-links">
 
-                    <!-- <div class="flex">
+                    <div class="flex">
                         <a href="profile.php" class="btn">Thông tin cá nhân</a>
                         <a href="orders.php" class="btn">Đơn hàng của tôi</a>
                         <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
-                    </div> -->
+                    </div> 
                     <a href="../profile.php" class="btn">Thông tin cá nhân</a>
                     <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
                     <div class="flex">
@@ -142,7 +148,7 @@ if ($user_id != '') {
                             onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng
                             xuất</a>
                     </div>
-                </div>
+                </div> -->
         </section>
     </header>
 

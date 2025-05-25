@@ -205,7 +205,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <option value="pending" <?php echo $status_filter === 'pending' ? 'selected' : ''; ?>>Chờ xử lý</option>
                             <option value="processing" <?php echo $status_filter === 'processing' ? 'selected' : ''; ?>>Đang xử lý</option>
                             <option value="shipped" <?php echo $status_filter === 'shipped' ? 'selected' : ''; ?>>Đang giao</option>
-                            <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>Hoàn tất</option>
+                            <!-- <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>Hoàn tất</option> -->
                             <option value="cancelled" <?php echo $status_filter === 'cancelled' ? 'selected' : ''; ?>>Đã hủy</option>
                         </select>
                     </form>
@@ -277,7 +277,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php if ($order['payment_status'] === 'processing'): ?>
                                         <option value="shipped">Đang giao</option>
                                     <?php endif; ?>
-                                    <option value="completed">Hoàn tất</option>
+                                    <!-- <option value="completed">Hoàn tất</option> -->
                                     <option value="cancelled">Hủy</option>
                                 </select>
                             <?php endif; ?>

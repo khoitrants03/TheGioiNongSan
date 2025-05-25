@@ -43,10 +43,11 @@ $select_orders->execute([$user_id]);
        padding: 20px 18px;
        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
        transition: box-shadow 0.2s, border-color 0.2s;
+       
    }
    .order-item:hover {
        border-color: #1565c0;
-       box-shadow: 0 4px 16px rgba(25, 118, 210, 0.18);
+       box-shadow: 0 4px 16px rgba(25, 118D, 210, 0.18);
        background: #f5faff;
    }
    .order-item .order-header {
@@ -131,13 +132,13 @@ $select_orders->execute([$user_id]);
                         </span>
                      </div>
                      <?php if($fetch_orders['payment_status'] == 'shipped'): ?>
-                     <div class="tracking">
+                     <!-- <div class="tracking">
                         
                         
                         <a href="track_order.php?id=<?= $fetch_orders['id']; ?>" class="btn">
                            <i class="fas fa-map-marker-alt"></i> Theo dõi đơn hàng
                         </a>
-                     </div>
+                     </div> -->
                      <?php endif; ?>
                   </div>
                   <div class="order-actions">

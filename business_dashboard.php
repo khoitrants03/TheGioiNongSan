@@ -82,11 +82,11 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
       </div>
 
       <div class="dashboard-container">
-         <a href="production_logs.php" class="dashboard-card">
+         <!-- <a href="production_logs.php" class="dashboard-card">
             <i class="fas fa-clipboard-list"></i>
             <h3>Quản lý nhật ký sản xuất</h3>
             <p>Theo dõi phân bón, thuốc trừ sâu và phương pháp canh tác</p>
-         </a>
+         </a> -->
 
          <a href="farmer_connections.php" class="dashboard-card">
             <i class="fas fa-handshake"></i>
@@ -100,11 +100,11 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             <p>Tạo, chỉnh sửa và quản lý đơn hàng</p>
          </a>
 
-         <a href="distribution_status.php" class="dashboard-card">
+         <!-- <a href="distribution_status.php" class="dashboard-card">
             <i class="fas fa-truck"></i>
             <h3>Cập nhật trạng thái phân phối</h3>
             <p>Gửi thông báo và cập nhật quá trình giao hàng</p>
-         </a>
+         </a> -->
          <a href="capnhatthongtinsp.php" class="dashboard-card">
             <i class="fas fa-seedling"></i>
             <h3>Quản lí sản phẩm </h3>

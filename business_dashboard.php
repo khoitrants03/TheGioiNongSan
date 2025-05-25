@@ -106,7 +106,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             <p>Gửi thông báo và cập nhật quá trình giao hàng</p>
          </a>
          <a href="capnhatthongtinsp.php" class="dashboard-card">
-<i class="fas fa-seedling"></i>
+            <i class="fas fa-seedling"></i>
             <h3>Quản lí sản phẩm </h3>
             <p>Cập nhật danh sách sản ohaarm của nông dân</p>
          </a>

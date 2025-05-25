@@ -70,7 +70,7 @@ if ($user_id) {
                     </div>
                 </div>
                 <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-                <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
+                <!-- <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a> -->
                 <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
                 <a href="taomaqr_sanpham.php">Quản lí mã qr</a>
                 <a href="track_order.php">Quản lí đơn hàng</a>

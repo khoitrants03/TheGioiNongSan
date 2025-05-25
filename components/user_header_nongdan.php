@@ -69,13 +69,13 @@ if ($user_id) {
                         <a href="#">Nông sản sạch</a>
                     </div>
                 </div>
-<<<<<<< HEAD
+
                 <!-- <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a> -->
                 <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
-=======
-                <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
+
+                <!-- <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a> -->
                 <!-- <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a> -->
->>>>>>> 7bb6d4378b4a7e5f1672f4a54a1875ac956cef0c
+
                 <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
                 <a href="taomaqr_sanpham.php">Quản lí mã qr</a>
                 <a href="track_order.php">Quản lí đơn hàng</a>

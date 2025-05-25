@@ -70,7 +70,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 <body>
 
    <?php
-   include 'components/user_header_doanhnghiep.php'; 
+   // include 'components/user_header_doanhnghiep.php'; 
    ?>
 
 

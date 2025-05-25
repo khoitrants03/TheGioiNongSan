@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
       if ($pass !== $cpass) {
          $message[] = 'Mật khẩu không khớp!';
       } else {
-         $hash_password = password_hash($pass, PASSWORD_DEFAULT);
+         $hash_password = $pass;
 
          $insert_user = $conn->prepare("
             INSERT INTO nguoidung (ho_ten, email, mat_khau, so_dien_thoai, dia_chi, id_vaitro, ngay_tao, phanquyen) 

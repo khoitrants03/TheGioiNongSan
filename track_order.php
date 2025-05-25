@@ -229,10 +229,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                            nhận</option>
                         <option value="Đã xác nhận" <?= $order['trang_thai'] === 'Đã xác nhận' ? 'selected' : '' ?>>Đã xác
                            nhận</option>
-                        <option value="Đang giao hàng" <?= $order['trang_thai'] === 'Đang giao hàng' ? 'selected' : '' ?>>Đang
+                        <!-- <option value="Đang giao hàng" <?= $order['trang_thai'] === 'Đang giao hàng' ? 'selected' : '' ?>>Đang
                            giao hàng</option>
                         <option value="Đã giao hàng" <?= $order['trang_thai'] === 'Đã giao hàng' ? 'selected' : '' ?>>Đã giao
-                           hàng</option>
+                           hàng</option> -->
                         <option value="Đã hủy" <?= $order['trang_thai'] === 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>
                      </select>
                   </p>

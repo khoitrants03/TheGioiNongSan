@@ -37,19 +37,19 @@ include 'components/add_cart.php';
 <body>
 
    <?php
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-        if ($_SESSION['phanquyen'] === 'doanhnghiep') {
-            require("components/user_header_doanhnghiep.php");
-        }
-                if ($_SESSION['phanquyen'] === 'khachhang') {
-            require("components/user_header_khachhang.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
+   if (isset($_SESSION['phanquyen'])) {
+      if ($_SESSION['phanquyen'] === 'nongdan') {
+         require("components/user_header_nongdan.php");
+      }
+      if ($_SESSION['phanquyen'] === 'doanhnghiep') {
+         require("components/user_header_doanhnghiep.php");
+      }
+      if ($_SESSION['phanquyen'] === 'khachhang') {
+         require("components/user_header_khachhang.php");
+      }
+   } else {
+      include("components/user_header.php");
+   }
 
    ?>
 
@@ -140,13 +140,13 @@ include 'components/add_cart.php';
                   <a href="product_detail.php?pid=<?= $fetch_products['ten_sanpham']; ?>" class="fas fa-eye"></a>
                   <img src="imgs/<?= $fetch_products['img']; ?>" alt="">
                   <div class="new">
-                    Tên sản phẩm: <?= $fetch_products['ten_sanpham']; ?>
+                     Tên sản phẩm: <?= $fetch_products['ten_sanpham']; ?>
                   </div>
                   <div class="name">
-                    Số lượng: <?= $fetch_products['so_luong_ton']; ?>
+                     Số lượng: <?= $fetch_products['so_luong_ton']; ?>
                   </div>
                   <div class="new">
-                    Giá: <?= $fetch_products['gia']; ?> 
+                     Giá: <?= $fetch_products['gia']; ?>
                   </div>
                </form>
                <?php

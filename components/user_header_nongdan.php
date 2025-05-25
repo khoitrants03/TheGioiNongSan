@@ -1,13 +1,17 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include 'connect.php';
 
 if (isset($_GET['logout'])) {
-    session_unset(); // Xóa tất cả biến trong session
-    session_destroy(); // Hủy session
-    header('Location: index.php'); // Quay lại trang chính
+    session_unset();
+    session_destroy();
+    header('Location: ../TheGioiNongSan/home.php');
     exit;
 }
 
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
+// Get user info if logged in
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $user_name = null;
@@ -19,6 +23,14 @@ if ($user_id) {
         $user_name = $fetch_profile['ho_ten'];
     }
 }
+
+// Get cart count
+$cart_count = 0;
+if ($user_id != '') {
+    $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+    $select_cart->execute([$user_id]);
+    $cart_count = $select_cart->rowCount();
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +40,9 @@ if ($user_id) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheGioiNongSan</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 
 <body>
@@ -49,7 +62,7 @@ if ($user_id) {
     <!-- Header -->
     <header class="header">
         <section class="content_bg-white">
-            <a href="index.php" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
+            <a href="../TheGioiNongSan/home.php" class="logo"><i id="logo" class="fas fa-tractor"></i>TheGioiNongSan</a>
 
             <nav class="navbar">
                 <a href="#"><i class="fas fa-phone-volume"></i> KHẨN CẤP: 1900 10854</a>
@@ -69,43 +82,66 @@ if ($user_id) {
                         <a href="#">Nông sản sạch</a>
                     </div>
                 </div>
-                <a href="#"><i class="fa-solid fa-bars" aria-hidden="true"></i>DANH MỤC SAN PHAM</a>
-                <a href="capnhatthongtinsp.php">Quản lí sản phẩm</a>
-                <a href="quanlinhatkisanxuat.php">Quản lí sản xuất</a>
-                <a href="taomaqr_sanpham.php">Quản lí mã qr</a>
-                <a href="track_order.php">Quản lí đơn hàng</a>
-                <!-- <a href="#">Thông tin đánh giá sản phẩm</a> -->
+                <a href="../about.php">Về chúng tôi</a>
+                <a href="../TheGioiNongSan/scan_qr.php">Quét mã QR</a>
+                <a href="#" class="dropdown-toggle">Rau củ sạch</a>
+                <a href="#" class="dropdown-toggle">Bún miến</a>
+                <a href="scan_qr.php">Quét mã QR</a>
+                <a href="../contact.php">Liên hệ</a>
             </nav>
+
             <div class="icons">
-                <?php
-                $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
-                $count_cart_items->execute([$user_id]);
-                $total_cart_items = $count_cart_items->rowCount();
-                ?>
-                <a href="search.php"><i class="fas fa-search"></i></a>
-                <div id="user-btn" class="fas fa-user"></div>
+                <a href="orders.php">
+                    <div id="user-btn" class="fas fa-user"></div>
+                </a>
+                <a href="search_page.php" class="fas fa-search"></a>
+                <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $cart_count; ?>)</span></a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="?logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');"
+                        class="fas fa-sign-out-alt"></a>
+                <?php endif; ?>
                 <div id="menu-btn" class="fas fa-bars"></div>
             </div>
 
-
             <div class="profile">
-                <?php if ($user_name): ?>
-                    <p class="name"><?= htmlspecialchars($user_name); ?></p>
-                    <div class="flex">
-                        <a href="profile.php" class="btn">Thông tin</a>
-                        <a href="?logout=true" onclick="return confirm('Bạn có chắc muốn đăng xuất?');"
-                            class="delete-btn">Đăng xuất</a>
+                <div class="profile-header">
+                    <div class="profile-picture">
+                        <?php if (!empty($fetch_profile['image'])): ?>
+                            <img src="../uploaded_img/<?= $fetch_profile['image']; ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <img src="../imgs/default-avatar.png" alt="Default Profile Picture">
+                        <?php endif; ?>
                     </div>
-                <?php else: ?>
-                    <p class="name">Vui lòng đăng nhập!</p>
-                    <a href="login.php" class="btn">Đăng nhập</a>
-                <?php endif; ?>
-            </div>
+                    <div class="profile-info">
+                        <h3><?= $fetch_profile['ho_ten']; ?></h3>
+                        <p><?= $fetch_profile['email']; ?></p>
+                    </div>
+                </div>
+                <div class="profile-links">
+
+                    <!-- <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                        <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                        <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    </div> -->
+                    <a href="../profile.php" class="btn">Thông tin cá nhân</a>
+                    <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
+                    <div class="flex">
+                        <a href="profile.php" class="btn">Thông tin cá nhân</a>
+                        <a href="orders.php" class="btn">Đơn hàng của tôi</a>
+                        <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
+                    </div>
+                    <div class="flex-btn">
+                        <a href="components/user_logout.php"
+                            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?');" class="delete-btn">Đăng
+                            xuất</a>
+                    </div>
+                </div>
         </section>
     </header>
+
+    <script src="../js/cart.js"></script>
     <script src="../js/script.js"></script>
-
-
 </body>
 
 </html>

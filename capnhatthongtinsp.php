@@ -9,13 +9,14 @@ session_start();
 // } else {
 //     $user_id = '';
 // }
-;
-$id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+// ;
+// $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-if (!$id_nongdan) {
-    echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
-    exit();
-}
+// if (!$id_nongdan) {
+//     echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
+//     exit();
+// }
+
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ if (!$id_nongdan) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nông dân</title>
+    <title>Quản Lí Sản Phẩm</title>
     <link rel="shortcut icon" href="./imgs/hospital-solid.svg" type="image/x-icon">
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -39,19 +40,19 @@ if (!$id_nongdan) {
     <!-- header section starts  -->
     <?php
 
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
+    // if (isset($_SESSION['phanquyen'])) {
+    //     if ($_SESSION['phanquyen'] === 'nongdan') {
+    //         require("components/user_header_nongdan.php");
+    //     }
+    // } else {}
+        // include("components/user_header_doanhnghiep.php");
+    
 
     ?> <!-- header section ends -->
 
     <div class="heading">
         <h3>Quản Lí Nông Sản</h3>
-        <p><a href="home.php">Trang chủ</a> <span> /Quản lí </span> </p>
+        <p><a href="business_dashboard.php">Trang chủ</a> <span> /Quản lí </span> </p>
     </div>
 
     <!-- menu section starts  -->
@@ -96,10 +97,28 @@ if (!$id_nongdan) {
                         <input type="file" id="txt_img" name="txt_img">
                     </div>
                     <div class="form-group">
-                        <label for="txt_manongdan">Mã Nông dân</label>
-                        <input type="text" class="form-control" id="txt_manongdan" name="txt_manongdan"
-                            value="<?php echo htmlspecialchars($id_nongdan); ?>" readonly>
+                        <label for="txt_manongdan">Tên Nông dân</label>
+                        <select class="form-control" id="txt_manongdan" name="txt_manongdan">
+                            <?php
+                            $query = $conn->prepare("
+                                SELECT nd.ho_ten AS ten, tt.id_nongdan AS id
+                                FROM thongtinnongdan tt
+                                JOIN nguoidung nd ON nd.id_nguoidung = tt.id_nongdan
+                            ");
+                            $query->execute();
+                            $ds_nongdan = $query->fetchAll(PDO::FETCH_ASSOC);
+                            ?>
+
+                            <option value="">-- Chọn nông dân --</option>
+                            <?php foreach ($ds_nongdan as $nongdan): ?>
+                                <option value="<?php echo htmlspecialchars($nongdan['id']); ?>"
+                                    <?php echo (isset($id_nongdan) && $nongdan['id'] == $id_nongdan) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($nongdan['ten']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="txt_madanhmuc">Mã danh mục</label>
                         <select id="txt_madanhmuc" name="txt_madanhmuc">
@@ -198,8 +217,8 @@ if (!$id_nongdan) {
             </thead>
             <tbody>
                 <?php
-                $stmt = $conn->prepare("SELECT * FROM SanPham WHERE id_nongdan = ? ORDER BY ngay_tao DESC LIMIT 10");
-                $stmt->execute([$id_nongdan]);
+                $stmt = $conn->prepare("SELECT * FROM SanPham   ORDER BY ngay_tao DESC LIMIT 10");
+                $stmt->execute( );
                 // $stmt->execute();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>";

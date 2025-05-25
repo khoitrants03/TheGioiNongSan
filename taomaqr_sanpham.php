@@ -108,23 +108,23 @@ if (isset($_GET['id'])) {
                         <label for="txt_tensanpham">Tên sản phẩm</label>
                         <select id="txt_tensanpham" name="txt_tensanpham" required>
                             <?php
-                           try {
-    $query = $conn->prepare("SELECT sp.id_sanpham, sp.ten_sanpham 
+                            try {
+                                $query = $conn->prepare("SELECT sp.id_sanpham, sp.ten_sanpham 
                              FROM sanpham sp 
                              JOIN nguoidung nd ON nd.id_nguoidung = sp.id_nongdan
                              WHERE nd.id_nguoidung = ?");
-    $query->execute([$id_nongdan]);
+                                $query->execute([$id_nongdan]);
 
-    if ($query->rowCount() > 0) {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            echo "<option value='" . htmlspecialchars($row['id_sanpham']) . "'>" . htmlspecialchars($row['ten_sanpham']) . "</option>";
-        }
-    } else {
-        echo "<option value=''>Không có sản phẩm</option>";
-    }
-} catch (PDOException $e) {
-    echo "<option value=''>Lỗi: " . htmlspecialchars($e->getMessage()) . "</option>";
-}
+                                if ($query->rowCount() > 0) {
+                                    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                                        echo "<option value='" . htmlspecialchars($row['id_sanpham']) . "'>" . htmlspecialchars($row['ten_sanpham']) . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value=''>Không có sản phẩm</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value=''>Lỗi: " . htmlspecialchars($e->getMessage()) . "</option>";
+                            }
                             ?>
                         </select>
                     </div>

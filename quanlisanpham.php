@@ -10,11 +10,11 @@ session_start();
 //     $user_id = '';
 // }
 // ;
-$id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
- if (!$id_nongdan) {
-    echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
-    exit();
-}
+// $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+//  if (!$id_nongdan) {
+//     echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
+//     exit();
+// }
 ?>
 
 <!DOCTYPE html>
@@ -38,19 +38,19 @@ $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
     <!-- header section starts  -->
     <?php
 
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-    } else {
-        include("components/user_header.php");
-    }
+    // if (isset($_SESSION['phanquyen'])) {
+    //     if ($_SESSION['phanquyen'] === 'nongdan') {
+    //         require("components/user_header_nongdan.php");
+    //     }
+    // } else {
+    //     include("components/user_header.php");
+    // }
 
     ?> <!-- header section ends -->
 
     <div class="heading">
         <h3>Quản Lí Nông Sản</h3>
-        <p><a href="home.php">Trang chủ</a> <span><a href="capnhatthongtinsp.php">/Quản lí </a> </span> </p>
+        <p><a href="business_dashboard.php">Trang chủ</a> <span><a href="capnhatthongtinsp.php">/Quản lí </a> </span> </p>
     </div>
 
     <!-- menu section starts  -->
@@ -68,7 +68,7 @@ $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
         </div>
         <!-- #endregion -->
     </section>
-    <div class="form-box">
+    <section class="form-box">
         <div class="form-title">DANH SÁCH SẢN PHẨM </div>
 
         <table class="product-table">
@@ -81,14 +81,13 @@ $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
                     <th>Số lượng</th>
                     <th>Nông dân</th>
                     <th>Danh mục</th>
-                    <th>QR Code</th>
-                    <th>Ngày tạo</th>
+                     <th>Ngày tạo</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $stmt = $conn->prepare("SELECT * FROM SanPham  where id_nongdan=? ORDER BY ngay_tao  DESC LIMIT 10");
-               $stmt->execute([$id_nongdan]);
+                $stmt = $conn->prepare("SELECT * FROM SanPham    ORDER BY ngay_tao  DESC LIMIT 10");
+               $stmt->execute();
                 $stmt->execute();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>";
@@ -99,20 +98,19 @@ $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
                     echo "<td>" . $row['so_luong_ton'] . "</td>";
                     echo "<td>" . $row['id_nongdan'] . "</td>";
                     echo "<td>" . $row['id_danhmuc'] . "</td>";
-                    echo "<td>" . $row['id_qrcode'] . "</td>";
-                    echo "<td>" . $row['ngay_tao'] . "</td>";
+                     echo "<td>" . $row['ngay_tao'] . "</td>";
                     echo "</tr>";
                 }
                 ?>
             </tbody>
 
         </table>
-    </div>
+    </section>
 
 
     <!-- menu section ends -->
     <!-- footer section starts  -->
-    <?php include 'components/footer_admin.php'; ?>
+    <?php include 'components/footer_admin.php';?>
     <!-- footer section ends -->
 
 

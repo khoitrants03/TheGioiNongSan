@@ -99,7 +99,7 @@ if (isset($_POST['send'])) {
             <input type="number" name="number" min="0" max="9999999999" class="box" placeholder="Nhập số điện thoại" required maxlength="10">
             <input type="email" name="email" maxlength="50" class="box" placeholder="Nhập email của bạn" required>
             <textarea name="msg" class="box" required placeholder="Lời nhắn của bạn" maxlength="500" cols="30" rows="10"></textarea>
-            <input type="submit" value="Gửi lời nhắn" name="send" class="btn">
+            <input type="submit" value="Gửi lời nhắn"  class="btn">
          </form>
 
       </div>

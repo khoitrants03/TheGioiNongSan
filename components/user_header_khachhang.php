@@ -82,12 +82,12 @@ if ($user_id != '') {
                         <a href="#">Nông sản sạch</a>
                     </div>
                 </div>
-                <a href="../about.php">Về chúng tôi</a>
-                <a href="../TheGioiNongSan/scan_qr.php">Quét mã QR</a>
+                <a href="about.php">Về chúng tôi</a>
+                
                 <a href="#" class="dropdown-toggle">Rau củ sạch</a>
                 <a href="#" class="dropdown-toggle">Bún miến</a>
                 <a href="scan_qr.php">Quét mã QR</a>
-                <a href="../contact.php">Liên hệ</a>
+                <a href="contact.php">Liên hệ</a>
                 
             </nav>
 

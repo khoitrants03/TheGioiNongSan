@@ -74,7 +74,7 @@ if ($user_id != '') {
         <section class="flex">
             <nav class="navbar">
                 <div class="dropdown">
-                    <a href="../product.php" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
+                    <a href="#" class="dropdown-toggle">DANH MỤC SAN PHAM</a>
                     <div class="dropdown-content">
                         <a href="#">Rau củ sạch</a>
                         <a href="#">Bún miến</a>
@@ -82,12 +82,11 @@ if ($user_id != '') {
                         <a href="#">Nông sản sạch</a>
                     </div>
                 </div>
-                <a href="../about.php">Về chúng tôi</a>
-                <a href="../TheGioiNongSan/scan_qr.php">Quét mã QR</a>
+                 <a href="../TheGioiNongSan/scan_qr.php">Quét mã QR</a>
                 <a href="#" class="dropdown-toggle">Rau củ sạch</a>
                 <a href="#" class="dropdown-toggle">Bún miến</a>
                 <a href="#" class="dropdown-toggle">Gạo các lọai</a>
-                <a href="../contact.php">Liên hệ</a>
+                <a href="contact.php">Liên hệ</a>
             </nav>
 
             <div class="icons">
@@ -112,10 +111,10 @@ if ($user_id != '') {
                             <img src="../imgs/default-avatar.png" alt="Default Profile Picture">
                         <?php endif; ?>
                     </div>
-                    <div class="profile-info">
+                    <!-- <div class="profile-info">
                         <h3><?= $fetch_profile['ho_ten']; ?></h3>
                         <p><?= $fetch_profile['email']; ?></p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="profile-links">
 
@@ -125,7 +124,7 @@ if ($user_id != '') {
                         <a href="wishlist.php" class="btn">Danh sách yêu thích</a>
                     </div> -->
                     <a href="../profile.php" class="btn">Thông tin cá nhân</a>
-                    <p class="name"><?= $fetch_profile['ho_ten']; ?></p>
+                    <!-- <p class="name"><?= $fetch_profile['ho_ten']; ?></p> -->
                     <div class="flex">
                         <a href="profile.php" class="btn">Thông tin cá nhân</a>
                         <a href="orders.php" class="btn">Đơn hàng của tôi</a>

@@ -10,12 +10,12 @@ session_start();
 //     $user_id = '';
 // }
 // ;
-$id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+// $id_nongdan = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-if (!$id_nongdan) {
-    echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
-    exit();
-}
+// if (!$id_nongdan) {
+//     echo "<script>alert('Bạn chưa đăng nhập'); window.location.href='login.php';</script>";
+//     exit();
+// }
 
 ?>
 
@@ -38,21 +38,7 @@ if (!$id_nongdan) {
 <body>
 
     <!-- header section starts  -->
-    <?php
-
-    if (isset($_SESSION['phanquyen'])) {
-        if ($_SESSION['phanquyen'] === 'nongdan') {
-            require("components/user_header_nongdan.php");
-        }
-        if ($_SESSION['phanquyen'] === 'khachhang') {
-            require("components/user_header_khachhang.php");
-        }
-        
-    } else {
-        include("components/user_header.php");
-    }
-
-    ?> <!-- header section ends -->
+    <!-- header section ends -->
 
     <div class="heading">
         <h3>Quản Lí Nông Sản</h3>
@@ -67,7 +53,7 @@ if (!$id_nongdan) {
 
         <div class="product-wrapper">
             <div class="menu-box">
-                <a href="quanlisanpham.php"><i class="fa-solid fa-gear"></i> Quản lí</a>
+                <a href="quanlisanpham_doanhnghiep.php"><i class="fa-solid fa-gear"></i> Quản lí</a>
                 <a href="#"><i class="fa fa-plus-square"></i> Xem chi tiết</a>
                 <a href="#"><i class="fa fa-plus-square"></i> Thêm sản phẩm</a>
             </div>
@@ -226,8 +212,8 @@ if (!$id_nongdan) {
                 // $stmt->execute();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>";
-                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
-                    echo "<td><a href='sanpham_chitiet.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
+                    echo "<td><a href='sanpham_chitiet_doanhnghiep.php?id=" . $row['id_sanpham'] . "'>" . $row['id_sanpham'] . "</a></td>";
+                    echo "<td><a href='sanpham_chitiet_doanhnghiep.php?id=" . $row['id_sanpham'] . "'>" . $row['ten_sanpham'] . "</a></td>";
                     echo "<td>" . $row['mo_ta'] . "</td>";
                     echo "<td>" . number_format($row['gia'], 0, ',', '.') . " VND</td>";
                     echo "<td>" . $row['so_luong_ton'] . "</td>";

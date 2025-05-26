@@ -183,7 +183,7 @@ if (!$id_nongdan) {
 
 
     </section>
-    <div class="form-box">
+    <section class="form-box">
         <div class="form-title">DANH SÁCH SẢN PHẨM MỚI TẠO</div>
 
         <table class="product-table">
@@ -215,7 +215,7 @@ if (!$id_nongdan) {
             </tbody>
         </table>
 
-    </div>
+    </section>
 
 
     <!-- menu section ends -->

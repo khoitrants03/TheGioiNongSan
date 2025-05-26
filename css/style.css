@@ -429,7 +429,7 @@
             width: 30rem;
             display: none;
             animation: fadeIn .2s linear;
-            z-index: 3;
+            z-index: 2;
         }
         
         .header .flex .profile.active {

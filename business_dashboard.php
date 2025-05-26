@@ -106,7 +106,7 @@ $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             <h3>Quản lí nhật kí sản xuất</h3>
             <p>Quản lí thời gian trồng trọt </p>
          </a>
-         <a href="capnhatthongtinsp.php" class="dashboard-card">
+         <a href="capnhatthongtinsp_doanhnghiep.php" class="dashboard-card">
             <i class="fas fa-seedling"></i>
             <h3>Quản lí sản phẩm </h3>
             <p>Cập nhật danh sách sản phẩm </p>

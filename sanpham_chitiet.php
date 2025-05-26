@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
             $delete = $conn->prepare("DELETE FROM SanPham WHERE id_sanpham = ?");
             $delete->execute([$product_id]);
 
-            echo "<script>alert('Đã xoá sản phẩm!'); window.location.href='sanpham_chitiet.php';</script>";
+            echo "<script>alert('Đã xoá sản phẩm!'); ;</script>";
             exit;
         }
 

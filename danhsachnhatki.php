@@ -71,7 +71,7 @@ if (!$id_nongdan) {
             </div>
             <!-- #endregion -->
     </section>
-    <div class="form-box">
+    <section class="form-box">
         <div class="form-title">DANH SÁCH Các Nhật Kí</div>
 
         <table class="product-table">
@@ -108,7 +108,7 @@ if (!$id_nongdan) {
                 ?>
             </tbody>
         </table>
-    </div>
+    </section>
 
 
 

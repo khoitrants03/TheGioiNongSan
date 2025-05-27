@@ -166,39 +166,44 @@ if (!$id_nongdan) {
             </div>
         </div>
         <?php
-        if (isset($_POST['add'])) {
-            // Lấy dữ liệu từ form
-            $ten_nongsan = $_POST['txt_tenns'];
-            $mota = $_POST['txt_mota'];
-            $gia = $_POST['txt_gia'];
-            $soluong = $_POST['txt_soluong'];
-            $id_nongdan = $_POST['txt_manongdan'];
-            $id_danhmuc = $_POST['txt_madanhmuc'];
-             $ngay_tao = $_POST['txt_ngaytao'];
+if (isset($_POST['add'])) {
+    // Lấy dữ liệu từ form
+    $ten_nongsan = $_POST['txt_tenns'];
+    $mota = $_POST['txt_mota'];
+    $gia = $_POST['txt_gia'];
+    $soluong = $_POST['txt_soluong'];
+    $id_nongdan = $_POST['txt_manongdan'];
+    $id_danhmuc = $_POST['txt_madanhmuc'];
+    $ngay_tao = $_POST['txt_ngaytao'];
 
-            // Chuẩn bị câu lệnh insert có thêm ngày_tao
-            $insert = $conn->prepare("INSERT INTO SanPham 
-        (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc,   ngay_tao) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)");
+    // Ràng buộc: đơn giá và số lượng phải > 1
+    if ($gia > 1000 && $soluong > 1) {
+        // Chuẩn bị câu lệnh insert
+        $insert = $conn->prepare("INSERT INTO SanPham 
+            (ten_sanpham, mo_ta, Gia, so_luong_ton, id_nongdan, id_danhmuc, ngay_tao) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-            // Thực thi câu lệnh
-            $success = $insert->execute([
-                $ten_nongsan,
-                $mota,
-                $gia,
-                $soluong,
-                $id_nongdan,
-                $id_danhmuc,
-                 $ngay_tao
-            ]);
+        // Thực thi câu lệnh
+        $success = $insert->execute([
+            $ten_nongsan,
+            $mota,
+            $gia,
+            $soluong,
+            $id_nongdan,
+            $id_danhmuc,
+            $ngay_tao
+        ]);
 
-            if ($success) {
-                echo "<script>alert('Thêm sản phẩm thành công!');</script>";
-            } else {
-                echo "<script>alert('Thêm sản phẩm thất bại.');</script>";
-            }
+        if ($success) {
+            echo "<script>alert('Thêm sản phẩm thành công!');</script>";
+        } else {
+            echo "<script>alert('Thêm sản phẩm thất bại.');</script>";
         }
-        ?>
+    } else {
+        echo "<script>alert('Đơn giá >1000 và số lượng phải lớn hơn 1.');</script>";
+    }
+}
+?>
 
 
 

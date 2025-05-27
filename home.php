@@ -127,7 +127,7 @@ include 'components/add_cart.php';
       <div class="box-container">
 
          <?php
-         $select_products = $conn->prepare("SELECT * FROM `sanpham` LIMIT 6");
+         $select_products = $conn->prepare("SELECT * FROM `sanpham` ");
          $select_products->execute();
          if ($select_products->rowCount() > 0) {
             while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
